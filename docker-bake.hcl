@@ -15,7 +15,7 @@ variable "HUGGINGFACE_ACCESS_TOKEN" {
 }
 
 group "default" {
-  targets = ["base", "sd3", "flux1-dev", "ipadatper"]
+  targets = ["base", "sd3", "flux1-dev", "ipadapter"]
 }
 
 target "base" {
@@ -50,14 +50,14 @@ target "flux1-dev" {
   inherits = ["base"]
 }
 
-target "ipadatper" {
+target "ipadapter" {
   context = "."
   dockerfile = "Dockerfile"
   target = "final"
   args = {
-    MODEL_TYPE = "ipadatper"
+    MODEL_TYPE = "ipadapter"
     HUGGINGFACE_ACCESS_TOKEN = "${HUGGINGFACE_ACCESS_TOKEN}"
   }
-  tags = ["${DOCKERHUB_REPO}/${DOCKERHUB_IMG}:${RELEASE_VERSION}-ipadatper"]
+  tags = ["${DOCKERHUB_REPO}/${DOCKERHUB_IMG}:${RELEASE_VERSION}-ipadapter"]
   inherits = ["base"]
 }
