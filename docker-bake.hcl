@@ -15,7 +15,7 @@ variable "HUGGINGFACE_ACCESS_TOKEN" {
 }
 
 group "default" {
-  targets = ["base", "sd3", "flux1-dev", "ipadapter"]
+  targets = ["ipadapter"]
 }
 
 target "base" {
