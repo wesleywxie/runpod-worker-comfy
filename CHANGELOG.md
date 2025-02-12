@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/wesleywxie/runpod-worker-comfy/compare/1.1.0...1.2.0) (2025-02-12)
+
+
+### Features
+
+* download ipadapter dependencies ([bf7b8d6](https://github.com/wesleywxie/runpod-worker-comfy/commit/bf7b8d654d797b49905e16d0e24a5db82e57e46b))
+
 # [1.1.0](https://github.com/wesleywxie/runpod-worker-comfy/compare/1.0.0...1.1.0) (2025-02-12)
 
 
