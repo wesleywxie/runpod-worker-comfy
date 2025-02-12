@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/wesleywxie/runpod-worker-comfy/compare/1.0.0...1.1.0) (2025-02-12)
+
+
+### Features
+
+* add libglib2.0-0 dependency ([86d9a65](https://github.com/wesleywxie/runpod-worker-comfy/commit/86d9a65f20040b1d3b9a9ea11176758884f7b286))
+
 # 1.0.0 (2025-01-26)
 
 
