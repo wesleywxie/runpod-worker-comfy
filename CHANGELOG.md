@@ -1,3 +1,10 @@
+## [1.2.1](https://github.com/wesleywxie/runpod-worker-comfy/compare/1.2.0...1.2.1) (2025-02-12)
+
+
+### Bug Fixes
+
+* fixed grammar error ([8273fe7](https://github.com/wesleywxie/runpod-worker-comfy/commit/8273fe79dce2edbac83a35ca2ba94734b56e6f83))
+
 # [1.2.0](https://github.com/wesleywxie/runpod-worker-comfy/compare/1.1.0...1.2.0) (2025-02-12)
 
 
