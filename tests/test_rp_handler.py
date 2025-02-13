@@ -132,7 +132,7 @@ class TestRunpodWorkerComfy(unittest.TestCase):
         mock_upload_image.return_value = "simulated_uploaded/image.png"
 
         outputs = {
-            "node_id": {"images": [{"filename": "ComfyUI_00001_.png", "subfolder": ""}]}
+            "node_id": {"images": [{"filename": "ComfyUI_00001_.png", "type": "output", "subfolder": ""}]}
         }
         job_id = "123"
 
@@ -191,7 +191,7 @@ class TestRunpodWorkerComfy(unittest.TestCase):
         mock_upload_image.return_value = "simulated_uploaded/image.png"
 
         outputs = {
-            "node_id": {"images": [{"filename": "ComfyUI_00001_.png", "subfolder": ""}]}
+            "node_id": {"images": [{"filename": "ComfyUI_00001_.png", "type": "output", "subfolder": ""}]}
         }
         job_id = "123"
 
