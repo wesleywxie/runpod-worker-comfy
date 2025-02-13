@@ -1,3 +1,10 @@
+## [1.2.2](https://github.com/wesleywxie/runpod-worker-comfy/compare/1.2.1...1.2.2) (2025-02-13)
+
+
+### Bug Fixes
+
+* only handle type output images ([f42a72e](https://github.com/wesleywxie/runpod-worker-comfy/commit/f42a72eb06661e1ccd5880ff5a36ac5b93b01a99))
+
 ## [1.2.1](https://github.com/wesleywxie/runpod-worker-comfy/compare/1.2.0...1.2.1) (2025-02-12)
 
 
