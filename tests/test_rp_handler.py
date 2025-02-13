@@ -165,7 +165,8 @@ class TestRunpodWorkerComfy(unittest.TestCase):
 
         # Assertions
         self.assertEqual(result["status"], "success")
-        self.assertEqual(result["message"], "http://example.com/uploaded/image.png")
+        self.assertEqual(result["message"], "")
+        self.assertEqual(result["items"][0], "http://example.com/uploaded/image.png")
         mock_upload_image.assert_called_once_with(
             job_id, "./test_resources/images/test/ComfyUI_00001_.png"
         )
@@ -198,7 +199,7 @@ class TestRunpodWorkerComfy(unittest.TestCase):
         result = rp_handler.process_output_images(outputs, job_id)
 
         # Check if the image was saved to the 'simulated_uploaded' directory
-        self.assertIn("simulated_uploaded", result["message"])
+        self.assertIn("simulated_uploaded", result["items"][0])
         self.assertEqual(result["status"], "success")
 
     @patch("rp_handler.requests.post")
