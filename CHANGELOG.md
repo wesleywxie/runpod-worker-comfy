@@ -1,3 +1,10 @@
+## [1.2.3](https://github.com/wesleywxie/runpod-worker-comfy/compare/1.2.2...1.2.3) (2025-02-13)
+
+
+### Bug Fixes
+
+* fix unit test failure due to missing keys ([31970b8](https://github.com/wesleywxie/runpod-worker-comfy/commit/31970b88b54e1e0125974b663d80f9753ce7594a))
+
 ## [1.2.2](https://github.com/wesleywxie/runpod-worker-comfy/compare/1.2.1...1.2.2) (2025-02-13)
 
 
