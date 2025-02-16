@@ -30,6 +30,9 @@ RUN pip install comfy-cli
 # Install ComfyUI
 RUN /usr/bin/yes | comfy --workspace /comfyui install --cuda-version 11.8 --nvidia --version 0.3.14
 
+# Optout analytics tracking
+RUN comfy tracking disable
+
 # Change working directory to ComfyUI
 WORKDIR /comfyui
 
