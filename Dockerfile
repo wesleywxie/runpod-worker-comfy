@@ -36,6 +36,8 @@ WORKDIR /comfyui
 # Install runpod
 RUN pip install runpod requests
 
+# Lock torch 2.5.1
+RUN pip install --force-reinstall torch==2.5.1
 # Support for the network volume
 ADD src/extra_model_paths.yaml ./
 
