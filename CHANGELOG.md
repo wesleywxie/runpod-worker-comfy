@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/wesleywxie/runpod-worker-comfy/compare/1.0.0...1.0.1) (2025-02-17)
+
+
+### Bug Fixes
+
+* specify comfyui manager version ([0c4a6e1](https://github.com/wesleywxie/runpod-worker-comfy/commit/0c4a6e1d8ac9e02c124bf05e8c5a3724bb5eedf2))
+
 # 1.0.0 (2025-02-16)
 
 
