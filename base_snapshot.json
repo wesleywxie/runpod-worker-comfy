@@ -14,7 +14,9 @@
             "disabled": false
         }
     },
-    "cnr_custom_nodes": {},
+    "cnr_custom_nodes": {
+        "comfyui_controlnet_aux": "1.0.6"
+    },
     "file_custom_nodes": [
         {
             "filename": "websocket_image_save.py",
