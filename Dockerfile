@@ -28,7 +28,7 @@ RUN apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/*
 RUN pip install comfy-cli
 
 # Install ComfyUI
-RUN /usr/bin/yes | comfy --workspace /comfyui install --cuda-version 11.8 --manager-url https://github.com/ltdrdata/ComfyUI-Manager@3.21.5 --nvidia --version 0.3.14
+RUN /usr/bin/yes | comfy --workspace /comfyui install --cuda-version 11.8 --manager-url https://github.com/ltdrdata/ComfyUI-Manager@3.30.8 --nvidia --version 0.3.26
 
 # Optout analytics tracking
 RUN comfy tracking disable
