@@ -239,6 +239,10 @@ def process_output_images(outputs, job_id):
             for image in node_output["images"]:
                 if image["type"] == "output":
                     output_images.append(os.path.join(image["subfolder"], image["filename"]))
+        if "gifs" in node_output:
+            for gif in node_output["gifs"]:
+                if gif["type"] == "output":
+                    output_images.append(os.path.join(gif["subfolder"], gif["filename"]))
 
     print(f"runpod-worker-comfy - image generation is done")
 
