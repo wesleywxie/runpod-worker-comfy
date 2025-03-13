@@ -38,7 +38,7 @@ RUN comfy tracking disable
 WORKDIR /comfyui
 
 # Install runpod and nessesery libraries
-RUN pip install runpod requests scikit-image opencv-python
+RUN pip install runpod requests scikit-image opencv-python matplotlib
 
 # Support for the network volume
 ADD src/extra_model_paths.yaml ./
