@@ -63,6 +63,7 @@ CMD ["/start.sh"]
 FROM base AS downloader
 
 ARG HUGGINGFACE_ACCESS_TOKEN
+ARG CIVITAI_ACCESS_TOKEN
 ARG MODEL_TYPE
 
 # Change working directory to ComfyUI
@@ -72,8 +73,8 @@ RUN mkdir -p models/checkpoints models/controlnet models/vae models/loras models
 
 # Download checkpoints/vae/LoRA to include in image based on model type
 RUN if [ "$MODEL_TYPE" = "sd3" ]; then \
-      wget --header="Authorization: Bearer ${HUGGINGFACE_ACCESS_TOKEN}" -O models/checkpoints/sd3.5_medium_incl_clips_t5xxlfp8scaled.safetensors https://huggingface.co/Comfy-Org/stable-diffusion-3.5-fp8/resolve/main/sd3.5_medium_incl_clips_t5xxlfp8scaled.safetensors && \
-      wget -O models/loras/midjourney-000005.safetensors "https://civitai.com/api/download/models/1023523?type=Model&format=SafeTensor&token=93393284b4f03947a21d2616bb195fd1"; \
+      wget -O models/checkpoints/sd3.5_medium_incl_clips_t5xxlfp8scaled.safetensors https://huggingface.co/Comfy-Org/stable-diffusion-3.5-fp8/resolve/main/sd3.5_medium_incl_clips_t5xxlfp8scaled.safetensors && \
+      wget -O models/loras/midjourney-000005.safetensors "https://civitai.com/api/download/models/1023523?type=Model&format=SafeTensor&token=${CIVITAI_ACCESS_TOKEN}"; \
     fi
 
 RUN if [ "$MODEL_TYPE" = "flux1-dev" ]; then \
