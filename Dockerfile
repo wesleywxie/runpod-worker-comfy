@@ -73,8 +73,8 @@ RUN mkdir -p models/checkpoints models/controlnet models/vae models/loras models
 
 # Download checkpoints/vae/LoRA to include in image based on model type
 RUN if [ "$MODEL_TYPE" = "sd3" ]; then \
-      cp /jfs/comfyui/models/checkpoints/sd3.5_medium_incl_clips_t5xxlfp8scaled.safetensors models/checkpoints/sd3.5_medium_incl_clips_t5xxlfp8scaled.safetensors && \
-      cp /jfs/comfyui/models/loras/midjourney-000005.safetensors models/loras/midjourney-000005.safetensors; \
+      cp models/checkpoints/sd3.5_medium_incl_clips_t5xxlfp8scaled.safetensors models/checkpoints/sd3.5_medium_incl_clips_t5xxlfp8scaled.safetensors && \
+      cp models/loras/midjourney-000005.safetensors models/loras/midjourney-000005.safetensors; \
     elif [ "$MODEL_TYPE" = "flux1-dev" ]; then \
       wget --header="Authorization: Bearer ${HUGGINGFACE_ACCESS_TOKEN}" -O models/unet/flux1-dev.safetensors https://huggingface.co/black-forest-labs/FLUX.1-dev/resolve/main/flux1-dev.safetensors && \
       wget -O models/clip/clip_l.safetensors https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/clip_l.safetensors && \
