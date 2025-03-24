@@ -38,7 +38,7 @@ RUN comfy tracking disable
 WORKDIR /comfyui
 
 # Install runpod and nessesery libraries
-RUN pip install runpod requests scikit-image opencv-python matplotlib
+RUN pip install runpod requests scikit-image opencv-python matplotlib imageio_ffmpeg
 
 # Support for the network volume
 ADD src/extra_model_paths.yaml ./
@@ -69,15 +69,16 @@ ARG MODEL_TYPE
 WORKDIR /comfyui
 
 # Create necessary directories
-RUN mkdir -p models/diffusion_models models/checkpoints models/vae models/ipadapter models/text_encoders models/clip_vision models/loras
+RUN mkdir -p models/checkpoints models/controlnet models/vae models/loras models/clip models/clip_vision models/unet models/diffusion_models models/ipadapter models/text_encoders models/upscale_models
 
 # Download checkpoints/vae/LoRA to include in image based on model type
 RUN if [ "$MODEL_TYPE" = "sd3" ]; then \
-      wget --header="Authorization: Bearer ${HUGGINGFACE_ACCESS_TOKEN}" -O models/checkpoints/sd3_medium_incl_clips_t5xxlfp8.safetensors https://huggingface.co/stabilityai/stable-diffusion-3-medium/resolve/main/sd3_medium_incl_clips_t5xxlfp8.safetensors; \
+      cp ~/comfyui/models/checkpoints/sd3.5_medium_incl_clips_t5xxlfp8scaled.safetensors models/checkpoints/sd3.5_medium_incl_clips_t5xxlfp8scaled.safetensors && \
+      cp ~/comfyui/models/loras/midjourney-000005.safetensors models/loras/midjourney-000005.safetensors; \
     elif [ "$MODEL_TYPE" = "flux1-dev" ]; then \
       wget --header="Authorization: Bearer ${HUGGINGFACE_ACCESS_TOKEN}" -O models/unet/flux1-dev.safetensors https://huggingface.co/black-forest-labs/FLUX.1-dev/resolve/main/flux1-dev.safetensors && \
       wget -O models/clip/clip_l.safetensors https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/clip_l.safetensors && \
-      wget -O models/clip/t5xxl_fp8_e4m3fn.safetensors https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/t5xxl_fp8_e4m3fn.safetensors && \
+      wget -O models/clip/t5xxl_fp8_e4m3fn_scaled.safetensors https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/t5xxl_fp8_e4m3fn_scaled.safetensors && \
       wget --header="Authorization: Bearer ${HUGGINGFACE_ACCESS_TOKEN}" -O models/vae/ae.safetensors https://huggingface.co/black-forest-labs/FLUX.1-dev/resolve/main/ae.safetensors; \
     elif [ "$MODEL_TYPE" = "wan21" ]; then \
       wget -O models/text_encoders/umt5_xxl_fp8_e4m3fn_scaled.safetensors https://huggingface.co/Comfy-Org/Wan_2.1_ComfyUI_repackaged/resolve/main/split_files/text_encoders/umt5_xxl_fp8_e4m3fn_scaled.safetensors && \
