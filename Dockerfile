@@ -68,13 +68,12 @@ ARG MODEL_TYPE
 
 # Change working directory to ComfyUI
 WORKDIR /comfyui
-
-RUN --mount=type=bind,source=/jfs/comfyui/models,target=/external_models
 # Create necessary directories
 RUN mkdir -p models/checkpoints models/controlnet models/vae models/loras models/clip models/clip_vision models/unet models/diffusion_models models/ipadapter models/text_encoders models/upscale_models
 
 # Download checkpoints/vae/LoRA to include in image based on model type
-RUN if [ "$MODEL_TYPE" = "sd3" ]; then \
+RUN --mount=type=bind,source=/jfs/comfyui/models,target=/external_models,readonly \
+    if [ "$MODEL_TYPE" = "sd3" ]; then \
       cp /external_models/checkpoints/sd3.5_medium_incl_clips_t5xxlfp8scaled.safetensors models/checkpoints/sd3.5_medium_incl_clips_t5xxlfp8scaled.safetensors && \
       cp /external_models/loras/midjourney-000005.safetensors models/loras/midjourney-000005.safetensors; \
     elif [ "$MODEL_TYPE" = "flux1-dev" ]; then \
