@@ -1,4 +1,3 @@
-# syntax=docker/dockerfile:1.2
 # Stage 1: Base image with common dependencies
 FROM nvidia/cuda:11.8.0-cudnn8-runtime-ubuntu22.04 AS base
 
@@ -72,23 +71,30 @@ WORKDIR /comfyui
 RUN mkdir -p models/checkpoints models/controlnet models/vae models/loras models/clip models/clip_vision models/unet models/diffusion_models models/ipadapter models/text_encoders models/upscale_models
 
 # Download checkpoints/vae/LoRA to include in image based on model type
-RUN --mount=type=bind,source=/jfs/comfyui/models,target=/external_models,readonly \
-    if [ "$MODEL_TYPE" = "sd3" ]; then \
-      cp /external_models/checkpoints/sd3.5_medium_incl_clips_t5xxlfp8scaled.safetensors models/checkpoints/sd3.5_medium_incl_clips_t5xxlfp8scaled.safetensors && \
-      cp /external_models/loras/midjourney-000005.safetensors models/loras/midjourney-000005.safetensors; \
-    elif [ "$MODEL_TYPE" = "flux1-dev" ]; then \
+RUN if [ "$MODEL_TYPE" = "sd3" ]; then \
+      wget --header="Authorization: Bearer ${HUGGINGFACE_ACCESS_TOKEN}" -O models/checkpoints/sd3.5_medium_incl_clips_t5xxlfp8scaled.safetensors https://huggingface.co/Comfy-Org/stable-diffusion-3.5-fp8/resolve/main/sd3.5_medium_incl_clips_t5xxlfp8scaled.safetensors && \
+      wget -O models/loras/midjourney-000005.safetensors "https://civitai.com/api/download/models/1023523?type=Model&format=SafeTensor&token=93393284b4f03947a21d2616bb195fd1"; \
+    fi
+
+RUN if [ "$MODEL_TYPE" = "flux1-dev" ]; then \
       wget --header="Authorization: Bearer ${HUGGINGFACE_ACCESS_TOKEN}" -O models/unet/flux1-dev.safetensors https://huggingface.co/black-forest-labs/FLUX.1-dev/resolve/main/flux1-dev.safetensors && \
       wget -O models/clip/clip_l.safetensors https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/clip_l.safetensors && \
       wget -O models/clip/t5xxl_fp8_e4m3fn_scaled.safetensors https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/t5xxl_fp8_e4m3fn_scaled.safetensors && \
       wget --header="Authorization: Bearer ${HUGGINGFACE_ACCESS_TOKEN}" -O models/vae/ae.safetensors https://huggingface.co/black-forest-labs/FLUX.1-dev/resolve/main/ae.safetensors; \
-    elif [ "$MODEL_TYPE" = "wan21" ]; then \
+    fi
+    
+RUN if [ "$MODEL_TYPE" = "wan21" ]; then \
       wget -O models/text_encoders/umt5_xxl_fp8_e4m3fn_scaled.safetensors https://huggingface.co/Comfy-Org/Wan_2.1_ComfyUI_repackaged/resolve/main/split_files/text_encoders/umt5_xxl_fp8_e4m3fn_scaled.safetensors && \
       wget -O models/clip_vision/clip_vision_h.safetensors https://huggingface.co/Comfy-Org/Wan_2.1_ComfyUI_repackaged/resolve/main/split_files/clip_vision/clip_vision_h.safetensors && \
       wget -O models/vae/wan_2.1_vae.safetensors https://huggingface.co/Comfy-Org/Wan_2.1_ComfyUI_repackaged/resolve/main/split_files/vae/wan_2.1_vae.safetensors; \
-    elif [ "$MODEL_TYPE" = "refiner" ]; then \
+    fi
+
+RUN if [ "$MODEL_TYPE" = "refiner" ]; then \
       wget -O models/upscale_models/RealESRGAN_x2plus.pth https://github.com/xinntao/Real-ESRGAN/releases/download/v0.2.1/RealESRGAN_x2plus.pth && \
       wget -O models/upscale_models/RealESRGAN_x4plus.pth https://github.com/xinntao/Real-ESRGAN/releases/download/v0.1.0/RealESRGAN_x4plus.pth; \
-    elif [ "$MODEL_TYPE" = "sd" ]; then \
+    fi
+
+RUN if [ "$MODEL_TYPE" = "sd" ]; then \
       wget -O models/checkpoints/dreamshaper_8.safetensors "https://civitai.com/api/download/models/128713?type=Model&format=SafeTensor&size=pruned&fp=fp16" && \
       wget -O models/controlnet/control_v11p_sd15_canny_fp16.safetensors https://huggingface.co/comfyanonymous/ControlNet-v1-1_fp16_safetensors/resolve/main/control_v11p_sd15_canny_fp16.safetensors && \
       wget -O models/clip_vision/CLIP-ViT-H-14-laion2B-s32B-b79K.safetensors https://huggingface.co/h94/IP-Adapter/resolve/main/models/image_encoder/model.safetensors && \
