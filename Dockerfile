@@ -74,7 +74,13 @@ RUN mkdir -p models/checkpoints models/controlnet models/vae models/loras models
 # Download checkpoints/vae/LoRA to include in image based on model type
 RUN if [ "$MODEL_TYPE" = "sd3" ]; then \
       wget -O models/checkpoints/sd3.5_medium_incl_clips_t5xxlfp8scaled.safetensors https://huggingface.co/Comfy-Org/stable-diffusion-3.5-fp8/resolve/main/sd3.5_medium_incl_clips_t5xxlfp8scaled.safetensors && \
-      wget -O models/loras/midjourney-000005.safetensors "https://civitai.com/api/download/models/1023523?type=Model&format=SafeTensor&token=${CIVITAI_ACCESS_TOKEN}"; \
+      wget -O models/loras/midjourney-000005.safetensors "https://civitai.com/api/download/models/1023523?type=Model&format=SafeTensor&token=${CIVITAI_ACCESS_TOKEN}" && \
+      wget -O models/loras/rd-pixel-art-lora-v1-sd3.5.safetensors "https://civitai.com/api/download/models/1074695?type=Model&format=SafeTensor&token=${CIVITAI_ACCESS_TOKEN}" && \
+      wget -O models/loras/lineart.safetensors "https://civitai.com/api/download/models/1052096?type=Model&format=SafeTensor&token=${CIVITAI_ACCESS_TOKEN}" && \
+      wget -O models/loras/SD3.5M-Booster_Type1.safetensors "https://civitai.com/api/download/models/1088510?type=Model&format=SafeTensor&token=${CIVITAI_ACCESS_TOKEN}" && \
+      wget -O models/loras/SD3.5M-Booster_Type2.safetensors "https://civitai.com/api/download/models/1092593?type=Model&format=SafeTensor&token=${CIVITAI_ACCESS_TOKEN}" && \
+      wget -O models/loras/Watercolors-000009.safetensors "https://civitai.com/api/download/models/1027308?type=Model&format=SafeTensor&token=${CIVITAI_ACCESS_TOKEN}" && \
+      wget -O models/loras/NEGATIVE_pnte_sd3m_lora_r128.safetensors "https://civitai.com/api/download/models/1360938?type=Model&format=SafeTensor&token=${CIVITAI_ACCESS_TOKEN}"; \
     fi
 
 RUN if [ "$MODEL_TYPE" = "flux1-dev" ]; then \
