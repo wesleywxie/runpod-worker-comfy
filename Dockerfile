@@ -38,7 +38,8 @@ RUN comfy tracking disable
 WORKDIR /comfyui
 
 # Install runpod and nessesery libraries
-RUN pip install runpod requests scikit-image opencv-python matplotlib imageio_ffmpeg
+#RUN pip install runpod requests scikit-image opencv-python matplotlib imageio_ffmpeg
+RUN pip install runpod requests
 
 # Support for the network volume
 ADD src/extra_model_paths.yaml ./
@@ -55,6 +56,9 @@ ADD *snapshot*.json /
 
 # Restore the snapshot to install custom nodes
 RUN /restore_snapshot.sh
+
+# Install custom nodes manually
+RUN comfy --workspace /comfyui node install comfyui-art-venture comfyui_ipadapter_plus comfyui_controlnet_aux comfyui-videohelpersuite ComfyUI-GGUF
 
 # Start container
 CMD ["/start.sh"]

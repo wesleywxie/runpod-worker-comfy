@@ -1,16 +1,8 @@
 {
     "comfyui": "9aac21f894a122ddb8d825c57ad61c0db5e630db",
     "git_custom_nodes": {
-        "https://github.com/city96/ComfyUI-GGUF": {
-            "hash": "bc5223b0e37e053dbec2ea5e5f52c2fd4b8f712a",
-            "disabled": false
-        }
     },
     "cnr_custom_nodes": {
-        "comfyui-art-venture": "1.0.6",
-        "comfyui_ipadapter_plus": "2.0.0",
-        "comfyui_controlnet_aux": "1.0.7",
-        "comfyui-videohelpersuite": "1.5.10"
     },
     "file_custom_nodes": [
         {
