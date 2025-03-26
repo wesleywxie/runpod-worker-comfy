@@ -72,22 +72,12 @@ WORKDIR /comfyui
 RUN mkdir -p models/checkpoints models/controlnet models/vae models/loras models/clip models/clip_vision models/unet models/diffusion_models models/ipadapter models/text_encoders models/upscale_models
 
 # Download checkpoints/vae/LoRA to include in image based on model type
-RUN if [ "$MODEL_TYPE" = "sd3" ]; then \
-      wget -O models/checkpoints/sd3.5_medium_incl_clips_t5xxlfp8scaled.safetensors https://huggingface.co/Comfy-Org/stable-diffusion-3.5-fp8/resolve/main/sd3.5_medium_incl_clips_t5xxlfp8scaled.safetensors && \
-      wget -O models/loras/midjourney-000005.safetensors "https://civitai.com/api/download/models/1023523?type=Model&format=SafeTensor&token=${CIVITAI_ACCESS_TOKEN}" && \
-      wget -O models/loras/rd-pixel-art-lora-v1-sd3.5.safetensors "https://civitai.com/api/download/models/1074695?type=Model&format=SafeTensor&token=${CIVITAI_ACCESS_TOKEN}" && \
-      wget -O models/loras/lineart.safetensors "https://civitai.com/api/download/models/1052096?type=Model&format=SafeTensor&token=${CIVITAI_ACCESS_TOKEN}" && \
-      wget -O models/loras/SD3.5M-Booster_Type1.safetensors "https://civitai.com/api/download/models/1088510?type=Model&format=SafeTensor&token=${CIVITAI_ACCESS_TOKEN}" && \
-      wget -O models/loras/SD3.5M-Booster_Type2.safetensors "https://civitai.com/api/download/models/1092593?type=Model&format=SafeTensor&token=${CIVITAI_ACCESS_TOKEN}" && \
-      wget -O models/loras/Watercolors-000009.safetensors "https://civitai.com/api/download/models/1027308?type=Model&format=SafeTensor&token=${CIVITAI_ACCESS_TOKEN}" && \
-      wget -O models/loras/NEGATIVE_pnte_sd3m_lora_r128.safetensors "https://civitai.com/api/download/models/1360938?type=Model&format=SafeTensor&token=${CIVITAI_ACCESS_TOKEN}"; \
-    fi
-
 RUN if [ "$MODEL_TYPE" = "flux1-dev" ]; then \
-      wget --header="Authorization: Bearer ${HUGGINGFACE_ACCESS_TOKEN}" -O models/unet/flux1-dev.safetensors https://huggingface.co/black-forest-labs/FLUX.1-dev/resolve/main/flux1-dev.safetensors && \
+      wget -O models/unet/flux1-dev-Q8_0.gguf https://huggingface.co/city96/FLUX.1-dev-gguf/resolve/main/flux1-dev-Q8_0.gguf && \
+      wget -O models/clip/t5-v1_1-xxl-encoder-Q8_0.gguf https://huggingface.co/city96/t5-v1_1-xxl-encoder-gguf/resolve/main/t5-v1_1-xxl-encoder-Q8_0.gguf && \
       wget -O models/clip/clip_l.safetensors https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/clip_l.safetensors && \
-      wget -O models/clip/t5xxl_fp8_e4m3fn_scaled.safetensors https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/t5xxl_fp8_e4m3fn_scaled.safetensors && \
-      wget --header="Authorization: Bearer ${HUGGINGFACE_ACCESS_TOKEN}" -O models/vae/ae.safetensors https://huggingface.co/black-forest-labs/FLUX.1-dev/resolve/main/ae.safetensors; \
+      wget --header="Authorization: Bearer ${HUGGINGFACE_ACCESS_TOKEN}" -O models/vae/flux_ae.safetensors https://huggingface.co/black-forest-labs/FLUX.1-dev/resolve/main/ae.safetensors; \
+      wget -O models/loras/aidmaMJ6.1-FLUX-v0.5.safetensors "https://civitai.com/api/download/models/1249246?type=Model&format=SafeTensor&token=${CIVITAI_ACCESS_TOKEN}"; \
     fi
     
 RUN if [ "$MODEL_TYPE" = "wan21" ]; then \
