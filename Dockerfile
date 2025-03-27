@@ -67,7 +67,7 @@ CMD ["/start.sh"]
 FROM base AS downloader
 
 # Install git and other necessary tools
-RUN apt-get update && apt-get install -y git wget 
+RUN apt-get update && apt-get install -y git git-lfs wget 
 
 ARG HUGGINGFACE_ACCESS_TOKEN
 ARG CIVITAI_ACCESS_TOKEN
