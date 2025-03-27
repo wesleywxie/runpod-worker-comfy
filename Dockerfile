@@ -58,7 +58,7 @@ ADD *snapshot*.json /
 RUN /restore_snapshot.sh
 
 # Install custom nodes manually
-RUN comfy --workspace /comfyui node install comfyui-art-venture comfyui_ipadapter_plus comfyui_controlnet_aux comfyui-videohelpersuite ComfyUI-GGUF
+RUN comfy --workspace /comfyui node install comfyui-art-venture comfyui_ipadapter_plus ComfyUI-IPAdapter-Flux comfyui_controlnet_aux comfyui-videohelpersuite ComfyUI-GGUF
 
 # Start container
 CMD ["/start.sh"]
@@ -77,11 +77,20 @@ RUN mkdir -p models/checkpoints models/controlnet models/vae models/loras models
 
 # Download checkpoints/vae/LoRA to include in image based on model type
 RUN if [ "$MODEL_TYPE" = "flux1-dev" ]; then \
+      git lfs install && \
+      git clone https://huggingface.co/InstantX/FLUX.1-dev-IP-Adapter models/ipadapter-flux && \
       wget -O models/unet/flux1-dev-Q8_0.gguf https://huggingface.co/city96/FLUX.1-dev-gguf/resolve/main/flux1-dev-Q8_0.gguf && \
       wget -O models/clip/t5-v1_1-xxl-encoder-Q8_0.gguf https://huggingface.co/city96/t5-v1_1-xxl-encoder-gguf/resolve/main/t5-v1_1-xxl-encoder-Q8_0.gguf && \
       wget -O models/clip/clip_l.safetensors https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/clip_l.safetensors && \
       wget --header="Authorization: Bearer ${HUGGINGFACE_ACCESS_TOKEN}" -O models/vae/flux_ae.safetensors https://huggingface.co/black-forest-labs/FLUX.1-dev/resolve/main/ae.safetensors; \
-      wget -O models/loras/aidmaMJ6.1-FLUX-v0.5.safetensors "https://civitai.com/api/download/models/1249246?type=Model&format=SafeTensor&token=${CIVITAI_ACCESS_TOKEN}"; \
+      wget -O models/loras/Ars_MidJourney_Watercolor.safetensors "https://civitai.com/api/download/models/742802?type=Model&format=SafeTensor&token=${CIVITAI_ACCESS_TOKEN}" && \
+      wget -O models/loras/PixelArtStylesFlux.safetensors "https://civitai.com/api/download/models/779124?type=Model&format=SafeTensor&token=${CIVITAI_ACCESS_TOKEN}" && \
+      wget -O models/loras/Cartoonillustration_flux_lora_v1.safetensors "https://civitai.com/api/download/models/734299?type=Model&format=SafeTensor&token=${CIVITAI_ACCESS_TOKEN}" && \
+      wget -O models/loras/RealAnime.safetensors "https://civitai.com/api/download/models/1549230?type=Model&format=SafeTensor&token=${CIVITAI_ACCESS_TOKEN}" && \
+      wget -O models/loras/New_Fantasy_CoreV4_FLUX.safetensors "https://civitai.com/api/download/models/1264088?type=Model&format=SafeTensor&token=${CIVITAI_ACCESS_TOKEN}" && \
+      wget -O models/loras/Digital_Impressionist_Flux.safetensors "https://civitai.com/api/download/models/1466567?type=Model&format=SafeTensor&token=${CIVITAI_ACCESS_TOKEN}" && \
+      wget -O models/loras/Comic_book_opus_IV.safetensors "https://civitai.com/api/download/models/1277654?type=Model&format=SafeTensor&token=${CIVITAI_ACCESS_TOKEN}" && \
+      wget -O models/loras/Inkwash-Fusion_v30-000030.safetensors "https://civitai.com/api/download/models/1524366?type=Model&format=SafeTensor&token=${CIVITAI_ACCESS_TOKEN}"; \
     fi
     
 RUN if [ "$MODEL_TYPE" = "wan21" ]; then \
