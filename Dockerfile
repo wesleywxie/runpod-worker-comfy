@@ -76,7 +76,7 @@ ARG MODEL_TYPE
 # Change working directory to ComfyUI
 WORKDIR /comfyui
 # Create necessary directories
-RUN mkdir -p models/checkpoints models/controlnet models/vae models/loras models/clip models/clip_vision models/unet models/diffusion_models models/ipadapter models/text_encoders models/upscale_models
+RUN mkdir -p models/{checkpoints,controlnet,vae,loras,clip,clip_vision,unet,diffusion_models,ipadapter,text_encoders,upscale_models}
 
 # Download checkpoints/vae/LoRA to include in image based on model type
 RUN if [ "$MODEL_TYPE" = "flux1-dev" ]; then \
@@ -93,7 +93,8 @@ RUN if [ "$MODEL_TYPE" = "flux1-dev" ]; then \
       wget -O models/loras/New_Fantasy_CoreV4_FLUX.safetensors "https://civitai.com/api/download/models/1264088?type=Model&format=SafeTensor&token=${CIVITAI_ACCESS_TOKEN}" && \
       wget -O models/loras/Digital_Impressionist_Flux.safetensors "https://civitai.com/api/download/models/1466567?type=Model&format=SafeTensor&token=${CIVITAI_ACCESS_TOKEN}" && \
       wget -O models/loras/Comic_book_opus_IV.safetensors "https://civitai.com/api/download/models/1277654?type=Model&format=SafeTensor&token=${CIVITAI_ACCESS_TOKEN}" && \
-      wget -O models/loras/Inkwash-Fusion_v30-000030.safetensors "https://civitai.com/api/download/models/1524366?type=Model&format=SafeTensor&token=${CIVITAI_ACCESS_TOKEN}"; \
+      wget -O models/loras/Inkwash-Fusion_v30-000030.safetensors "https://civitai.com/api/download/models/1524366?type=Model&format=SafeTensor&token=${CIVITAI_ACCESS_TOKEN}" && \
+      wget -O models/loras/Studio_Ghibli_Flux.safetensors "https://civitai.com/api/download/models/755852?type=Model&format=SafeTensor&token=${CIVITAI_ACCESS_TOKEN}"; \
     fi
     
 RUN if [ "$MODEL_TYPE" = "wan21" ]; then \
