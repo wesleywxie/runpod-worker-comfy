@@ -48,14 +48,14 @@ ADD src/extra_model_paths.yaml ./
 WORKDIR /
 
 # Add scripts
-ADD src/start.sh src/restore_snapshot.sh src/rp_handler.py test_input.json ./
-RUN chmod +x /start.sh /restore_snapshot.sh
+# ADD src/start.sh src/restore_snapshot.sh src/rp_handler.py test_input.json ./
+# RUN chmod +x /start.sh /restore_snapshot.sh
 
 # Optionally copy the snapshot file
-ADD *snapshot*.json /
+# ADD *snapshot*.json /
 
 # Restore the snapshot to install custom nodes
-RUN /restore_snapshot.sh
+# RUN /restore_snapshot.sh
 
 # Install custom nodes manually
 RUN comfy --workspace /comfyui node install comfyui-art-venture comfyui_ipadapter_plus ComfyUI-IPAdapter-Flux comfyui_controlnet_aux comfyui-videohelpersuite ComfyUI-GGUF
