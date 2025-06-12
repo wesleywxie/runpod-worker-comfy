@@ -62,8 +62,17 @@ def validate_input(job_input):
                 "'images' must be a list of objects with 'name' and 'image' keys",
             )
 
+    # Validate 'api_key' in input, if provided
+    api_key = job_input.get("api_key")
+    if api_key is not None:
+        if not api_key.startswith('comfyui-'):
+            return (
+                None,
+                "'api_key' must start with 'comfyui-' prefix",
+            )
+
     # Return validated data and no error
-    return {"workflow": workflow, "images": images}, None
+    return {"workflow": workflow, "images": images, "api_key": api_key}, None
 
 
 def check_server(url, retries=500, delay=50):
@@ -153,20 +162,22 @@ def upload_images(images):
     }
 
 
-def queue_workflow(workflow):
+def queue_workflow(workflow, api_key=None):
     """
     Queue a workflow to be processed by ComfyUI
 
     Args:
         workflow (dict): A dictionary containing the workflow to be processed
+        api_key (str, optional): API key for authentication
 
     Returns:
         dict: The JSON response from ComfyUI after processing the workflow
     """
+    json_data = {"prompt": workflow}
+    if api_key:
+        json_data["extra_data"] = {"api_key_comfy_org": api_key}
 
-    # The top level element "prompt" is required by ComfyUI
-    data = json.dumps({"prompt": workflow}).encode("utf-8")
-
+    data = json.dumps(json_data).encode("utf-8")
     req = urllib.request.Request(f"http://{COMFY_HOST}/prompt", data=data)
     return json.loads(urllib.request.urlopen(req).read())
 
@@ -306,6 +317,7 @@ def handler(job):
     # Extract validated data
     workflow = validated_data["workflow"]
     images = validated_data.get("images")
+    api_key = validated_data.get("api_key")
 
     # Make sure that the ComfyUI API is available
     check_server(
@@ -322,7 +334,7 @@ def handler(job):
 
     # Queue the workflow
     try:
-        queued_workflow = queue_workflow(workflow)
+        queued_workflow = queue_workflow(workflow=workflow, api_key=api_key)
         prompt_id = queued_workflow["prompt_id"]
         print(f"runpod-worker-comfy - queued workflow with ID {prompt_id}")
     except Exception as e:
