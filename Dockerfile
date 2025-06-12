@@ -77,6 +77,7 @@ ARG MODEL_TYPE
 WORKDIR /comfyui
 # Create necessary directories
 RUN mkdir -p models/{checkpoints,controlnet,vae,loras,clip,clip_vision,unet,diffusion_models,ipadapter,text_encoders,upscale_models}
+RUN mkdir -p models/ipadapter
 
 # Download checkpoints/vae/LoRA to include in image based on model type
 RUN if [ "$MODEL_TYPE" = "flux1-dev" ]; then \
