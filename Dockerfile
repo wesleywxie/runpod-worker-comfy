@@ -1,5 +1,5 @@
 # Stage 1: Base image with common dependencies
-FROM nvidia/cuda:12.4.1-cudnn-runtime-ubuntu22.04 AS base
+FROM nvidia/cuda:12.6.3-cudnn-runtime-ubuntu24.04 AS base
 
 # Prevents prompts from packages asking for user input during installation
 ENV DEBIAN_FRONTEND=noninteractive
@@ -29,7 +29,7 @@ RUN apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/*
 RUN pip install comfy-cli
 
 # Install ComfyUI
-RUN /usr/bin/yes | comfy --workspace /comfyui install --cuda-version 12.4 --manager-url https://github.com/ltdrdata/ComfyUI-Manager@3.31.13 --nvidia --version 0.3.40
+RUN /usr/bin/yes | comfy --workspace /comfyui install --cuda-version 12.6 --manager-url https://github.com/ltdrdata/ComfyUI-Manager@3.31.13 --nvidia --version 0.3.40
 
 # Optout analytics tracking
 RUN comfy tracking disable
@@ -48,14 +48,8 @@ ADD src/extra_model_paths.yaml ./
 WORKDIR /
 
 # Add scripts
-# ADD src/start.sh src/restore_snapshot.sh src/rp_handler.py test_input.json ./
-# RUN chmod +x /start.sh /restore_snapshot.sh
-
-# Optionally copy the snapshot file
-# ADD *snapshot*.json /
-
-# Restore the snapshot to install custom nodes
-# RUN /restore_snapshot.sh
+ADD src/start.sh src/rp_handler.py test_input.json ./
+RUN chmod +x /start.sh
 
 # Install custom nodes manually
 RUN comfy --workspace /comfyui node install comfyui-art-venture comfyui_ipadapter_plus ComfyUI-IPAdapter-Flux comfyui_controlnet_aux comfyui-videohelpersuite ComfyUI-GGUF
