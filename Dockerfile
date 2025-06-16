@@ -12,21 +12,33 @@ ENV CMAKE_BUILD_PARALLEL_LEVEL=8
 
 # Install Python, git and other necessary tools
 RUN apt-get update && apt-get install -y \
-    python3.10 \
-    python3-pip \
+    python3.12 \
+    python3.12-venv \
     git \
     wget \
     libgl1 \
     libglib2.0-0 \
+    libsm6 \
+    libxext6 \
+    libxrender1 \
     ffmpeg \
-    && ln -sf /usr/bin/python3.10 /usr/bin/python \
+    && ln -sf /usr/bin/python3.12 /usr/bin/python \
     && ln -sf /usr/bin/pip3 /usr/bin/pip
 
 # Clean up to reduce image size
 RUN apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/*
 
-# Install comfy-cli
-RUN pip install comfy-cli
+# Install uv (latest) using official installer and create isolated venv
+RUN wget -qO- https://astral.sh/uv/install.sh | sh \
+    && ln -s /root/.local/bin/uv /usr/local/bin/uv \
+    && ln -s /root/.local/bin/uvx /usr/local/bin/uvx \
+    && uv venv /opt/venv
+
+# Use the virtual environment for all subsequent commands
+ENV PATH="/opt/venv/bin:${PATH}"
+
+# Install comfy-cli + dependencies needed by it to install ComfyUI
+RUN uv pip install comfy-cli pip setuptools wheel
 
 # Install ComfyUI
 RUN /usr/bin/yes | comfy --workspace /comfyui install --cuda-version 12.6 --manager-url https://github.com/ltdrdata/ComfyUI-Manager@3.31.13 --nvidia --version 0.3.40
@@ -39,13 +51,16 @@ WORKDIR /comfyui
 
 # Install runpod and nessesery libraries
 #RUN pip install runpod requests scikit-image opencv-python matplotlib imageio_ffmpeg
-RUN pip install runpod requests
+# RUN pip install runpod requests
 
 # Support for the network volume
 ADD src/extra_model_paths.yaml ./
 
 # Go back to the root
 WORKDIR /
+
+# Install Python runtime dependencies for the handler
+RUN uv pip install runpod requests websocket-client
 
 # Add scripts
 ADD src/start.sh src/rp_handler.py test_input.json ./
