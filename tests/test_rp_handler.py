@@ -18,12 +18,13 @@ class TestRunpodWorkerComfy(unittest.TestCase):
         input_data = {"workflow": {"key": "value"}}
         validated_data, error = rp_handler.validate_input(input_data)
         self.assertIsNone(error)
-        self.assertEqual(validated_data, {"workflow": {"key": "value"}, "images": None})
+        self.assertEqual(validated_data, {"workflow": {"key": "value"}, "images": None, "api_key": None})
 
     def test_valid_input_with_workflow_and_images(self):
         input_data = {
             "workflow": {"key": "value"},
             "images": [{"name": "image1.png", "image": "base64string"}],
+            "api_key": None,
         }
         validated_data, error = rp_handler.validate_input(input_data)
         self.assertIsNone(error)
@@ -56,7 +57,7 @@ class TestRunpodWorkerComfy(unittest.TestCase):
         input_data = '{"workflow": {"key": "value"}}'
         validated_data, error = rp_handler.validate_input(input_data)
         self.assertIsNone(error)
-        self.assertEqual(validated_data, {"workflow": {"key": "value"}, "images": None})
+        self.assertEqual(validated_data, {"workflow": {"key": "value"}, "images": None, "api_key": None})
 
     def test_empty_input(self):
         input_data = None
