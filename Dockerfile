@@ -19,6 +19,7 @@ ENV XFORMERS_VERSION=0.0.29.post3
 # Install git and other necessary tools
 RUN apt-get update && apt-get install -y \
     software-properties-common \
+    python-is-python3 \
     git \
     wget \
     libgl1 \
@@ -34,8 +35,8 @@ RUN apt install -y --no-install-recommends \
     "python3-tk"
 
 # Link Python
-RUN rm /usr/bin/python && ln -s /usr/bin/python${PYTHON_VERSION} /usr/bin/python
-RUN rm /usr/bin/python3 && ln -s /usr/bin/python${PYTHON_VERSION} /usr/bin/python3
+#RUN rm /usr/bin/python && ln -s /usr/bin/python${PYTHON_VERSION} /usr/bin/python
+#RUN rm /usr/bin/python3 && ln -s /usr/bin/python${PYTHON_VERSION} /usr/bin/python3
 
 # Install pip
 RUN curl -sS https://bootstrap.pypa.io/get-pip.py | python${PYTHON_VERSION}
