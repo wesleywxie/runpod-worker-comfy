@@ -12,20 +12,20 @@ ENV CMAKE_BUILD_PARALLEL_LEVEL=8
 
 # Install Python, git and other necessary tools
 RUN apt-get update && apt-get install -y \
-    python3.12 \
+    python3.10 \
     python3-pip \
     git \
     wget \
     libgl1 \
     libglib2.0-0 \
     ffmpeg \
-    && ln -sf /usr/bin/python3.12 /usr/bin/python \
+    && ln -sf /usr/bin/python3.10 /usr/bin/python \
     && ln -sf /usr/bin/pip3 /usr/bin/pip
 
 # Clean up to reduce image size
 RUN apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/*
 
-# Install comfy-cli using Python 3.12
+# Install comfy-cli using Python 3.10
 RUN python -m pip install --upgrade pip && python -m pip install comfy-cli
 
 # Install ComfyUI
