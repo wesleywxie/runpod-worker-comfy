@@ -17,28 +17,25 @@ ENV TORCH_VERSION=2.6.0+cu124
 ENV XFORMERS_VERSION=0.0.29.post3
 
 # Install Python from deadsnakes PPA
-add-apt-repository ppa:deadsnakes/ppa
-apt install -y --no-install-recommends \
+RUN add-apt-repository ppa:deadsnakes/ppa
+RUN apt install -y --no-install-recommends \
     "python${PYTHON_VERSION}" \
     "python${PYTHON_VERSION}-dev" \
     "python${PYTHON_VERSION}-venv" \
     "python3-tk"
 
 # Link Python
-rm /usr/bin/python
-ln -s /usr/bin/python${PYTHON_VERSION} /usr/bin/python
-rm /usr/bin/python3
-ln -s /usr/bin/python${PYTHON_VERSION} /usr/bin/python3
+RUN rm /usr/bin/python && ln -s /usr/bin/python${PYTHON_VERSION} /usr/bin/python
+RUN rm /usr/bin/python3 && ln -s /usr/bin/python${PYTHON_VERSION} /usr/bin/python3
 
 # Install pip
-curl -sS https://bootstrap.pypa.io/get-pip.py | python${PYTHON_VERSION}
+RUN curl -sS https://bootstrap.pypa.io/get-pip.py | python${PYTHON_VERSION}
 
 # Upgrade pip
-python3 -m pip install --upgrade --no-cache-dir pip
+RUN python3 -m pip install --upgrade --no-cache-dir pip
 
 # Create symlink for pip3
-rm -f /usr/bin/pip3
-ln -s /usr/local/bin/pip3 /usr/bin/pip3
+RUN rm -f /usr/bin/pip3 && ln -s /usr/local/bin/pip3 /usr/bin/pip3
 
 # Install git and other necessary tools
 RUN apt-get update && apt-get install -y \
