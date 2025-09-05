@@ -1,5 +1,5 @@
 # Stage 1: Base image with common dependencies
-FROM nvidia/cuda:12.4.1-cudnn-runtime-ubuntu22.04 AS base
+FROM nvidia/cuda:12.4.1-cudnn-runtime-ubuntu24.04 AS base
 
 # Prevents prompts from packages asking for user input during installation
 ENV DEBIAN_FRONTEND=noninteractive
@@ -12,24 +12,24 @@ ENV CMAKE_BUILD_PARALLEL_LEVEL=8
 
 # Install Python, git and other necessary tools
 RUN apt-get update && apt-get install -y \
-    python3.10 \
+    python3.12 \
     python3-pip \
     git \
     wget \
     libgl1 \
     libglib2.0-0 \
     ffmpeg \
-    && ln -sf /usr/bin/python3.10 /usr/bin/python \
+    && ln -sf /usr/bin/python3.12 /usr/bin/python \
     && ln -sf /usr/bin/pip3 /usr/bin/pip
 
 # Clean up to reduce image size
 RUN apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/*
 
-# Install comfy-cli
-RUN pip install comfy-cli
+# Install comfy-cli using Python 3.12
+RUN python -m pip install --upgrade pip && python -m pip install comfy-cli
 
 # Install ComfyUI
-RUN /usr/bin/yes | comfy --workspace /comfyui install --cuda-version 12.4 --manager-url https://github.com/ltdrdata/ComfyUI-Manager@3.31.13 --nvidia --version 0.3.40
+RUN /usr/bin/yes | comfy --workspace /comfyui install --cuda-version 12.4 --manager-url https://github.com/ltdrdata/ComfyUI-Manager@3.33.8 --nvidia --version 0.3.57
 
 # Optout analytics tracking
 RUN comfy tracking disable
@@ -37,9 +37,8 @@ RUN comfy tracking disable
 # Change working directory to ComfyUI
 WORKDIR /comfyui
 
-# Install runpod and nessesery libraries
-#RUN pip install runpod requests scikit-image opencv-python matplotlib imageio_ffmpeg
-RUN pip install runpod requests
+# Install runpod and necessary libraries
+RUN python -m pip install runpod requests scikit-image opencv-python matplotlib imageio_ffmpeg
 
 # Support for the network volume
 ADD src/extra_model_paths.yaml ./
