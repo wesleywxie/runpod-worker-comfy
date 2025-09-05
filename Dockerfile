@@ -1,5 +1,5 @@
 # Stage 1: Base image with common dependencies
-FROM ashleykza/runpod-base:2.4.5-python3.12-cuda12.4.1-torch2.6.0 AS base
+FROM nvidia/cuda:12.4.1-cudnn-runtime-ubuntu22.04 AS base
 
 # Prevents prompts from packages asking for user input during installation
 ENV DEBIAN_FRONTEND=noninteractive
@@ -10,7 +10,37 @@ ENV PYTHONUNBUFFERED=1
 # Speed up some cmake builds
 ENV CMAKE_BUILD_PARALLEL_LEVEL=8
 
-# Install Python, git and other necessary tools
+ENV PYTHON_VERSION=3.12
+
+ENV INDEX_URL=https://download.pytorch.org/whl/cu124
+ENV TORCH_VERSION=2.6.0+cu124
+ENV XFORMERS_VERSION=0.0.29.post3
+
+# Install Python from deadsnakes PPA
+add-apt-repository ppa:deadsnakes/ppa
+apt install -y --no-install-recommends \
+    "python${PYTHON_VERSION}" \
+    "python${PYTHON_VERSION}-dev" \
+    "python${PYTHON_VERSION}-venv" \
+    "python3-tk"
+
+# Link Python
+rm /usr/bin/python
+ln -s /usr/bin/python${PYTHON_VERSION} /usr/bin/python
+rm /usr/bin/python3
+ln -s /usr/bin/python${PYTHON_VERSION} /usr/bin/python3
+
+# Install pip
+curl -sS https://bootstrap.pypa.io/get-pip.py | python${PYTHON_VERSION}
+
+# Upgrade pip
+python3 -m pip install --upgrade --no-cache-dir pip
+
+# Create symlink for pip3
+rm -f /usr/bin/pip3
+ln -s /usr/local/bin/pip3 /usr/bin/pip3
+
+# Install git and other necessary tools
 RUN apt-get update && apt-get install -y \
     git \
     wget \
@@ -18,10 +48,14 @@ RUN apt-get update && apt-get install -y \
     libglib2.0-0 \
     ffmpeg
 
+# Install Torch and xformers
+RUN pip3 install --no-cache-dir torch==${TORCH_VERSION} torchvision torchaudio --index-url ${INDEX_URL} && \
+    pip3 install --no-cache-dir xformers==${XFORMERS_VERSION} --index-url ${INDEX_URL}
+
 # Clean up to reduce image size
 RUN apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/*
 
-# Install comfy-cli using Python
+# Install comfy-cli using Python 3.10
 RUN python -m pip install --upgrade pip && python -m pip install comfy-cli
 
 # Install ComfyUI
