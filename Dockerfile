@@ -16,6 +16,15 @@ ENV INDEX_URL=https://download.pytorch.org/whl/cu124
 ENV TORCH_VERSION=2.6.0+cu124
 ENV XFORMERS_VERSION=0.0.29.post3
 
+# Install git and other necessary tools
+RUN apt-get update && apt-get install -y \
+    software-properties-common \
+    git \
+    wget \
+    libgl1 \
+    libglib2.0-0 \
+    ffmpeg
+
 # Install Python from deadsnakes PPA
 RUN add-apt-repository ppa:deadsnakes/ppa
 RUN apt install -y --no-install-recommends \
@@ -36,14 +45,6 @@ RUN python3 -m pip install --upgrade --no-cache-dir pip
 
 # Create symlink for pip3
 RUN rm -f /usr/bin/pip3 && ln -s /usr/local/bin/pip3 /usr/bin/pip3
-
-# Install git and other necessary tools
-RUN apt-get update && apt-get install -y \
-    git \
-    wget \
-    libgl1 \
-    libglib2.0-0 \
-    ffmpeg
 
 # Install Torch and xformers
 RUN pip3 install --no-cache-dir torch==${TORCH_VERSION} torchvision torchaudio --index-url ${INDEX_URL} && \
