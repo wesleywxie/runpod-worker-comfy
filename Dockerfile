@@ -16,6 +16,12 @@ ENV INDEX_URL=https://download.pytorch.org/whl/cu124
 ENV TORCH_VERSION=2.6.0+cu124
 ENV XFORMERS_VERSION=0.0.29.post3
 
+ARG AWS_REGION=ap-northeast-1
+
+RUN sed -i "s|http://archive.ubuntu.com/ubuntu/|http://${AWS_REGION}.ec2.archive.ubuntu.com/ubuntu/|g" /etc/apt/sources.list \
+    && sed -i "s|http://security.ubuntu.com/ubuntu/|http://${AWS_REGION}.ec2.archive.ubuntu.com/ubuntu/|g" /etc/apt/sources.list \
+    && apt-get update
+
 # Install git and other necessary tools
 RUN apt-get update && apt-get install -y \
     software-properties-common \
