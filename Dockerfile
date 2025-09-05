@@ -81,7 +81,7 @@ RUN if [ "$MODEL_TYPE" = "flux1-dev" ]; then \
       wget -O models/clip/t5-v1_1-xxl-encoder-Q8_0.gguf https://huggingface.co/city96/t5-v1_1-xxl-encoder-gguf/resolve/main/t5-v1_1-xxl-encoder-Q8_0.gguf && \
       wget -O models/clip/clip_l.safetensors https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/clip_l.safetensors && \
       wget --header="Authorization: Bearer ${HUGGINGFACE_ACCESS_TOKEN}" -O models/vae/flux_ae.safetensors https://huggingface.co/black-forest-labs/FLUX.1-dev/resolve/main/ae.safetensors && \
-      wget -O models/loras/Ars_MidJourney_Watercolor.safetensors "https://civitai.com/api/download/models/742802?type=Model&format=SafeTensor&token=${CIVITAI_ACCESS_TOKEN}" && \
+      wget -O models/loras/mjV6.safetensors "https://huggingface.co/strangerzonehf/Flux-Midjourney-Mix2-LoRA/resolve/main/mjV6.safetensors" && \
       wget -O models/loras/PixelArtStylesFlux.safetensors "https://civitai.com/api/download/models/779124?type=Model&format=SafeTensor&token=${CIVITAI_ACCESS_TOKEN}" && \
       wget -O models/loras/Cartoonillustration_flux_lora_v1.safetensors "https://civitai.com/api/download/models/734299?type=Model&format=SafeTensor&token=${CIVITAI_ACCESS_TOKEN}" && \
       wget -O models/loras/RealAnime.safetensors "https://civitai.com/api/download/models/1549230?type=Model&format=SafeTensor&token=${CIVITAI_ACCESS_TOKEN}" && \
@@ -89,7 +89,7 @@ RUN if [ "$MODEL_TYPE" = "flux1-dev" ]; then \
       wget -O models/loras/Digital_Impressionist_Flux.safetensors "https://civitai.com/api/download/models/1466567?type=Model&format=SafeTensor&token=${CIVITAI_ACCESS_TOKEN}" && \
       wget -O models/loras/Comic_book_opus_IV.safetensors "https://civitai.com/api/download/models/1277654?type=Model&format=SafeTensor&token=${CIVITAI_ACCESS_TOKEN}" && \
       wget -O models/loras/Inkwash-Fusion_v30-000030.safetensors "https://civitai.com/api/download/models/1524366?type=Model&format=SafeTensor&token=${CIVITAI_ACCESS_TOKEN}" && \
-      wget -O models/loras/Studio_Ghibli_Flux.safetensors "https://civitai.com/api/download/models/755852?type=Model&format=SafeTensor&token=${CIVITAI_ACCESS_TOKEN}"; \
+      wget -O models/loras/Ghibili-Cartoon-Art.safetensors "https://huggingface.co/strangerzonehf/Ghibli-Flux-Cartoon-LoRA/resolve/main/Ghibili-Cartoon-Art.safetensors"; \
     fi
     
 RUN if [ "$MODEL_TYPE" = "wan21" ]; then \
