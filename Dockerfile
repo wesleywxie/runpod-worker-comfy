@@ -26,6 +26,7 @@ RUN sed -i "s|http://archive.ubuntu.com/ubuntu/|http://${AWS_REGION}.ec2.archive
 RUN apt-get update && apt-get install -y \
     software-properties-common \
     python-is-python3 \
+    python3-pip \
     git \
     wget \
     libgl1 \
