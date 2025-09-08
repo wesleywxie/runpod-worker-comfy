@@ -79,7 +79,7 @@ RUN python -m pip install --upgrade pip && python -m pip install comfy-cli
 # Install ComfyUI
 # Use CUDA_SHORT (e.g., 12.4) to match CUDA toolchain for prebuilt wheels
 ARG CUDA_SHORT=12.4
-RUN /usr/bin/yes | comfy --workspace /comfyui install --cuda-version ${CUDA_SHORT} --manager-url https://github.com/ltdrdata/ComfyUI-Manager@3.33.8 --nvidia --version 0.3.57
+RUN /usr/bin/yes | comfy --workspace /comfyui install --skip-torch-or-directml true --manager-url https://github.com/ltdrdata/ComfyUI-Manager@3.33.8 --nvidia --version 0.3.57
 
 # Optout analytics tracking
 RUN comfy tracking disable
