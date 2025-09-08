@@ -114,12 +114,12 @@ target "sd" {
 }
 
 # WAN 2.1 needs CUDA 12.8; override CUDA/Torch for this target only
-target "wan21" {
+target "wan" {
   context = "."
   dockerfile = "Dockerfile"
   target = "final"
   args = {
-    MODEL_TYPE = "wan21"
+    MODEL_TYPE = "wan"
     HUGGINGFACE_ACCESS_TOKEN = "${HUGGINGFACE_ACCESS_TOKEN}"
     PYTHON_VERSION     = "${PYTHON_VERSION}"
     # Override CUDA to 12.8 for WAN 2.1 only
@@ -130,6 +130,6 @@ target "wan21" {
     TORCH_VERSION      = "2.8.0+cu128"
     XFORMERS_VERSION   = "0.0.32.post2"
   }
-  tags = ["${DOCKERHUB_REPO}/${DOCKERHUB_IMG}:${RELEASE_VERSION}-wan21"]
+  tags = ["${DOCKERHUB_REPO}/${DOCKERHUB_IMG}:${RELEASE_VERSION}-wan"]
   inherits = ["base"]
 }
