@@ -1,5 +1,11 @@
+# syntax=docker/dockerfile:1.6
+
 # Stage 1: Base image with common dependencies
-FROM nvidia/cuda:12.4.1-cudnn-runtime-ubuntu22.04 AS base
+# Allow overriding CUDA/Ubuntu variants via build args
+ARG CUDA_VERSION=12.4.1
+ARG CUDNN_FLAVOR=cudnn-runtime
+ARG UBUNTU_VERSION=22.04
+FROM nvidia/cuda:${CUDA_VERSION}-${CUDNN_FLAVOR}-ubuntu${UBUNTU_VERSION} AS base
 
 # Prevents prompts from packages asking for user input during installation
 ENV DEBIAN_FRONTEND=noninteractive
@@ -10,14 +16,20 @@ ENV PYTHONUNBUFFERED=1
 # Speed up some cmake builds
 ENV CMAKE_BUILD_PARALLEL_LEVEL=8
 
-ENV PYTHON_VERSION=3.12
+# Core version args (overridable via Bake or --build-arg)
+ARG PYTHON_VERSION=3.12
+ARG TORCH_CUDA_SUFFIX=cu124
+ARG TORCH_VERSION=2.6.0+cu124
+ARG XFORMERS_VERSION=0.0.29.post3
 
-ENV INDEX_URL=https://download.pytorch.org/whl/cu124
-ENV TORCH_VERSION=2.6.0+cu124
-ENV XFORMERS_VERSION=0.0.29.post3
+# Expose as environment variables for convenience
+ENV PYTHON_VERSION=${PYTHON_VERSION}
+ENV INDEX_URL=https://download.pytorch.org/whl/${TORCH_CUDA_SUFFIX}
+ENV TORCH_VERSION=${TORCH_VERSION}
+ENV XFORMERS_VERSION=${XFORMERS_VERSION}
 
 ARG AWS_REGION=ap-northeast-1
-
+# Set up AWS region mirror to speed up the build
 RUN sed -i "s|http://archive.ubuntu.com/ubuntu/|http://${AWS_REGION}.ec2.archive.ubuntu.com/ubuntu/|g" /etc/apt/sources.list \
     && sed -i "s|http://security.ubuntu.com/ubuntu/|http://${AWS_REGION}.ec2.archive.ubuntu.com/ubuntu/|g" /etc/apt/sources.list \
     && apt-get update
@@ -65,7 +77,9 @@ RUN apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/*
 RUN python -m pip install --upgrade pip && python -m pip install comfy-cli
 
 # Install ComfyUI
-RUN /usr/bin/yes | comfy --workspace /comfyui install --cuda-version 12.4 --manager-url https://github.com/ltdrdata/ComfyUI-Manager@3.33.8 --nvidia --version 0.3.57
+# Use CUDA_SHORT (e.g., 12.4) to match CUDA toolchain for prebuilt wheels
+ARG CUDA_SHORT=12.4
+RUN /usr/bin/yes | comfy --workspace /comfyui install --cuda-version ${CUDA_SHORT} --manager-url https://github.com/ltdrdata/ComfyUI-Manager@3.33.8 --nvidia --version 0.3.57
 
 # Optout analytics tracking
 RUN comfy tracking disable

@@ -331,13 +331,13 @@ Build your customized Docker image locally:
 
 ```bash
 # Build the base image
-docker build -t <your_dockerhub_username>/runpod-worker-comfy:dev-base --target base --platform linux/amd64 .
+docker build -t <your_dockerhub_username>/runpod-worker-compy:dev-base --target base --platform linux/amd64 .
 
 # Build the SDXL image
-docker build --build-arg MODEL_TYPE=sdxl -t <your_dockerhub_username>/runpod-worker-comfy:dev-sdxl --platform linux/amd64 .
+docker build --build-arg MODEL_TYPE=sdxl -t <your_dockerhub_username>/runpod-worker-compy:dev-sdxl --platform linux/amd64 .
 
 # Build the SD3 image
-docker build --build-arg MODEL_TYPE=sd3 --build-arg HUGGINGFACE_ACCESS_TOKEN=<your-huggingface-token> -t <your_dockerhub_username>/runpod-worker-comfy:dev-sd3 --platform linux/amd64 .
+docker build --build-arg MODEL_TYPE=sd3 --build-arg HUGGINGFACE_ACCESS_TOKEN=<your-huggingface-token> -t <your_dockerhub_username>/runpod-worker-compy:dev-sd3 --platform linux/amd64 .
 ```
 
 > [!NOTE]  
@@ -463,8 +463,8 @@ And also make sure to add these **variables** to your repository:
 
 | Variable Name    | Description                                                  | Example Value         |
 | ---------------- | ------------------------------------------------------------ | --------------------- |
-| `DOCKERHUB_REPO` | The repository on Docker Hub where the image will be pushed. | `timpietruskyblibla`  |
-| `DOCKERHUB_IMG`  | The name of the image to be pushed to Docker Hub.            | `runpod-worker-comfy` |
+| `DOCKERHUB_REPO` | The repository on Docker Hub where the image will be pushed. | `wesleywxie`  |
+| `DOCKERHUB_IMG`  | The name of the image to be pushed to Docker Hub.            | `runpod-worker-compy` |
 
 ## Acknowledgments
 
