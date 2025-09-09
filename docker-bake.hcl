@@ -59,24 +59,6 @@ target "base" {
   tags = ["${DOCKERHUB_REPO}/${DOCKERHUB_IMG}:${RELEASE_VERSION}-base"]
 }
 
-target "sd3" {
-  context = "."
-  dockerfile = "Dockerfile"
-  target = "final"
-  args = {
-    MODEL_TYPE = "sd3"
-    HUGGINGFACE_ACCESS_TOKEN = "${HUGGINGFACE_ACCESS_TOKEN}"
-    PYTHON_VERSION     = "${PYTHON_VERSION}"
-    CUDA_VERSION       = "${CUDA_VERSION}"
-    CUDA_SHORT         = "${CUDA_SHORT}"
-    TORCH_CUDA_SUFFIX  = "${TORCH_CUDA_SUFFIX}"
-    TORCH_VERSION      = "${TORCH_VERSION}"
-    XFORMERS_VERSION   = "${XFORMERS_VERSION}"
-  }
-  tags = ["${DOCKERHUB_REPO}/${DOCKERHUB_IMG}:${RELEASE_VERSION}-sd3"]
-  inherits = ["base"]
-}
-
 target "flux1-dev" {
   context = "."
   dockerfile = "Dockerfile"
