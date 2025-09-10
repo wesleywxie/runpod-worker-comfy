@@ -14,6 +14,10 @@ variable "HUGGINGFACE_ACCESS_TOKEN" {
   default = ""
 }
 
+variable "CIVITAI_ACCESS_TOKEN" {
+  default = ""
+}
+
 # Build variants (can be overridden via CLI --set)
 variable "PYTHON_VERSION" {
   default = "3.12"
@@ -66,6 +70,7 @@ target "flux" {
   args = {
     MODEL_TYPE = "flux"
     HUGGINGFACE_ACCESS_TOKEN = "${HUGGINGFACE_ACCESS_TOKEN}"
+    CIVITAI_ACCESS_TOKEN = "${CIVITAI_ACCESS_TOKEN}"
     PYTHON_VERSION     = "${PYTHON_VERSION}"
     CUDA_VERSION       = "${CUDA_VERSION}"
     CUDA_SHORT         = "${CUDA_SHORT}"
@@ -84,6 +89,7 @@ target "sd" {
   args = {
     MODEL_TYPE = "sd"
     HUGGINGFACE_ACCESS_TOKEN = "${HUGGINGFACE_ACCESS_TOKEN}"
+    CIVITAI_ACCESS_TOKEN = "${CIVITAI_ACCESS_TOKEN}"
     PYTHON_VERSION     = "${PYTHON_VERSION}"
     CUDA_VERSION       = "${CUDA_VERSION}"
     CUDA_SHORT         = "${CUDA_SHORT}"
@@ -103,6 +109,7 @@ target "wan" {
   args = {
     MODEL_TYPE = "wan"
     HUGGINGFACE_ACCESS_TOKEN = "${HUGGINGFACE_ACCESS_TOKEN}"
+    CIVITAI_ACCESS_TOKEN = "${CIVITAI_ACCESS_TOKEN}"
     PYTHON_VERSION     = "${PYTHON_VERSION}"
     # Override CUDA to 12.8 for WAN 2.1 only
     CUDA_VERSION       = "12.8.1"
