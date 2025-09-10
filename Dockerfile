@@ -123,7 +123,7 @@ RUN mkdir -p models/{checkpoints,controlnet,vae,loras,clip,clip_vision,unet,diff
 RUN mkdir -p models/ipadapter
 
 # Download checkpoints/vae/LoRA to include in image based on model type
-RUN if [ "$MODEL_TYPE" = "flux1-dev" ]; then \
+RUN if [ "$MODEL_TYPE" = "flux" ]; then \
       git lfs install && \
       git clone https://huggingface.co/InstantX/FLUX.1-dev-IP-Adapter models/ipadapter-flux && \
       wget -O models/unet/flux1-dev-Q8_0.gguf https://huggingface.co/city96/FLUX.1-dev-gguf/resolve/main/flux1-dev-Q8_0.gguf && \

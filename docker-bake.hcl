@@ -59,12 +59,12 @@ target "base" {
   tags = ["${DOCKERHUB_REPO}/${DOCKERHUB_IMG}:${RELEASE_VERSION}-base"]
 }
 
-target "flux1-dev" {
+target "flux" {
   context = "."
   dockerfile = "Dockerfile"
   target = "final"
   args = {
-    MODEL_TYPE = "flux1-dev"
+    MODEL_TYPE = "flux"
     HUGGINGFACE_ACCESS_TOKEN = "${HUGGINGFACE_ACCESS_TOKEN}"
     PYTHON_VERSION     = "${PYTHON_VERSION}"
     CUDA_VERSION       = "${CUDA_VERSION}"
@@ -73,7 +73,7 @@ target "flux1-dev" {
     TORCH_VERSION      = "${TORCH_VERSION}"
     XFORMERS_VERSION   = "${XFORMERS_VERSION}"
   }
-  tags = ["${DOCKERHUB_REPO}/${DOCKERHUB_IMG}:${RELEASE_VERSION}-flux1-dev"]
+  tags = ["${DOCKERHUB_REPO}/${DOCKERHUB_IMG}:${RELEASE_VERSION}-flux"]
   inherits = ["base"]
 }
 
