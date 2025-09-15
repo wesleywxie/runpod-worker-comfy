@@ -110,6 +110,7 @@ RUN if [ "$MODEL_TYPE" = "flux" ]; then \
       pip freeze | grep -E "torch|torchvision|torchaudio|xformers" > constraints.txt && \
       git clone https://github.com/mit-han-lab/ComfyUI-nunchaku custom_nodes/nunchaku_nodes && \
       pip3 install --no-cache-dir -r custom_nodes/nunchaku_nodes/requirements.txt -c constraints.txt && \
+      g++ --version && \
       wget https://github.com/nunchaku-tech/nunchaku/releases/download/v1.0.0/nunchaku-1.0.0+torch2.6-cp312-cp312-linux_x86_64.whl && \
       pip3 install --no-cache-dir nunchaku-1.0.0+torch2.6-cp312-cp312-linux_x86_64.whl && \
       rm nunchaku-1.0.0+torch2.6-cp312-cp312-linux_x86_64.whl && \
