@@ -66,8 +66,8 @@ RUN curl -sS https://bootstrap.pypa.io/get-pip.py | python${PYTHON_VERSION} \
 RUN pip3 install --no-cache-dir torch==${TORCH_VERSION} torchvision torchaudio --index-url ${INDEX_URL} && \
     pip3 install --no-cache-dir xformers==${XFORMERS_VERSION} --index-url ${INDEX_URL}
 
-# Install comfy-cli using Python 3.10
-RUN python -m pip install --upgrade pip && python -m pip install --no-cache-dir comfy-cli runpod requests scikit-image opencv-python matplotlib imageio_ffmpeg
+# Install comfy-cli using Python
+RUN python3 -m pip install --upgrade pip && python3 -m pip install --no-cache-dir comfy-cli runpod requests scikit-image opencv-python matplotlib imageio_ffmpeg
 
 # Install ComfyUI
 # Use CUDA_SHORT (e.g., 12.4) to match CUDA toolchain for prebuilt wheels
