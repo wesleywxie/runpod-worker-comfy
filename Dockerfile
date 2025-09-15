@@ -67,7 +67,7 @@ RUN pip3 install --no-cache-dir torch==${TORCH_VERSION} torchvision torchaudio -
     pip3 install --no-cache-dir xformers==${XFORMERS_VERSION} --index-url ${INDEX_URL}
 
 # Install comfy-cli using Python
-RUN python3 -m pip install --upgrade pip && pip3 install --no-cache-dir comfy-cli runpod requests setuptools wheel packaging setuptools-distutils
+RUN python3 -m pip install --upgrade pip && pip3 install --no-cache-dir comfy-cli runpod requests setuptools wheel packaging setuptools-distros
 
 
 # Install ComfyUI
