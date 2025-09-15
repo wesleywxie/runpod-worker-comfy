@@ -140,7 +140,7 @@ RUN if [ "$MODEL_TYPE" = "flux" ]; then \
       wget -O models/loras/Digital_Impressionist_Flux.safetensors "https://civitai.com/api/download/models/1466567?type=Model&format=SafeTensor&token=${CIVITAI_ACCESS_TOKEN}" && \
       wget -O models/loras/Comic_book_opus_IV.safetensors "https://civitai.com/api/download/models/1277654?type=Model&format=SafeTensor&token=${CIVITAI_ACCESS_TOKEN}" && \
       wget -O models/loras/Inkwash-Fusion_v30-000030.safetensors "https://civitai.com/api/download/models/1524366?type=Model&format=SafeTensor&token=${CIVITAI_ACCESS_TOKEN}" && \
-      wget -O models/loras/Ghibili-Cartoon-Art.safetensors https://huggingface.co/strangerzonehf/Ghibli-Flux-Cartoon-LoRA/resolve/main/Ghibili-Cartoon-Art.safetensors \
+      wget -O models/loras/Ghibili-Cartoon-Art.safetensors https://huggingface.co/strangerzonehf/Ghibli-Flux-Cartoon-LoRA/resolve/main/Ghibili-Cartoon-Art.safetensors; \
     fi
     
 RUN if [ "$MODEL_TYPE" = "wan" ]; then \
