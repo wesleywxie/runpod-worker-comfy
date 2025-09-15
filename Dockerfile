@@ -37,7 +37,6 @@ RUN sed -i "s|http://archive.ubuntu.com/ubuntu/|http://${AWS_REGION}.ec2.archive
 # Install git and other necessary tools
 RUN apt-get update && apt-get install -y \
         software-properties-common \
-        python-is-python3 \
         python3-pip \
         git \
         wget \
@@ -50,6 +49,10 @@ RUN apt-get update && apt-get install -y \
         "python${PYTHON_VERSION}-dev" \
         "python${PYTHON_VERSION}-venv" \
         "python3-tk" \
+    && update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.10 1 \
+    && update-alternatives --install /usr/bin/python3 python3 /usr/bin/python${PYTHON_VERSION} 2 \
+    && update-alternatives --set python3 /usr/bin/python${PYTHON_VERSION} \
+    && python3 --version \
     && apt-get autoremove -y \
     && apt-get clean -y \
     && rm -rf /var/lib/apt/lists/*
@@ -107,7 +110,6 @@ RUN mkdir -p models/{checkpoints,controlnet,vae,loras,clip,clip_vision,unet,diff
 
 # Download checkpoints/vae/LoRA to include in image based on model type
 RUN if [ "$MODEL_TYPE" = "flux" ]; then \
-      python --version && \
       pip freeze | grep -E "torch|torchvision|torchaudio|xformers" > constraints.txt && \
       git clone https://github.com/mit-han-lab/ComfyUI-nunchaku custom_nodes/nunchaku_nodes && \
       pip3 install --no-cache-dir -r custom_nodes/nunchaku_nodes/requirements.txt -c constraints.txt && \
