@@ -88,7 +88,7 @@ ADD src/start.sh src/rp_handler.py test_input.json ./
 RUN chmod +x /start.sh
 
 # Install custom nodes manually
-RUN comfy --workspace /comfyui node install comfyui-art-venture comfyui_ipadapter_plus comfyui_controlnet_aux comfyui-videohelpersuite
+RUN comfy --workspace /comfyui node install comfyui-art-venture
 
 WORKDIR /comfyui
 RUN if [ "$MODEL_TYPE" = "flux" ]; then \
@@ -98,6 +98,16 @@ RUN if [ "$MODEL_TYPE" = "flux" ]; then \
       wget https://github.com/nunchaku-tech/nunchaku/releases/download/v1.0.0/nunchaku-1.0.0+torch2.6-cp312-cp312-linux_x86_64.whl && \
       pip3 install --no-cache-dir nunchaku-1.0.0+torch2.6-cp312-cp312-linux_x86_64.whl && rm nunchaku-1.0.0+torch2.6-cp312-cp312-linux_x86_64.whl; \
 fi
+
+WORKDIR /
+RUN if [ "$MODEL_TYPE" = "wan" ]; then \
+      RUN comfy --workspace /comfyui node install comfyui-videohelpersuite
+fi
+
+RUN if [ "$MODEL_TYPE" = "sd" ]; then \
+      RUN comfy --workspace /comfyui node install comfyui_ipadapter_plus comfyui_controlnet_aux
+fi
+
 
 # Start container
 CMD ["/start.sh"]
