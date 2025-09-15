@@ -35,8 +35,7 @@ RUN sed -i "s|http://archive.ubuntu.com/ubuntu/|http://${AWS_REGION}.ec2.archive
     && apt-get update
 
 # Install git and other necessary tools
-RUN add-apt-repository ppa:deadsnakes/ppa \
-    && apt-get update && apt-get install -y \
+RUN apt-get update && apt-get install -y \
         software-properties-common \
         python-is-python3 \
         python3-pip \
@@ -45,6 +44,7 @@ RUN add-apt-repository ppa:deadsnakes/ppa \
         libgl1 \
         libglib2.0-0 \
         ffmpeg \
+    && add-apt-repository ppa:deadsnakes/ppa \
     && apt install -y --no-install-recommends \
         "python${PYTHON_VERSION}" \
         "python${PYTHON_VERSION}-dev" \
