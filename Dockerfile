@@ -67,7 +67,7 @@ RUN pip3 install --no-cache-dir torch==${TORCH_VERSION} torchvision torchaudio -
     pip3 install --no-cache-dir xformers==${XFORMERS_VERSION} --index-url ${INDEX_URL}
 
 # Install comfy-cli using Python
-RUN python3 -m pip install --upgrade pip && pip3 install --no-cache-dir comfy-cli runpod requests setuptools wheel packaging
+RUN python3 -m pip install --upgrade pip && pip3 install --no-cache-dir comfy-cli runpod requests
 
 
 # Install ComfyUI
@@ -78,13 +78,6 @@ RUN /usr/bin/yes | comfy --workspace /comfyui install --skip-torch-or-directml -
 ARG MODEL_TYPE
 # Change working directory to ComfyUI
 WORKDIR /comfyui
-RUN if [ "$MODEL_TYPE" = "flux" ]; then \
-      pip3 freeze | grep -E "torch|torchvision|torchaudio|xformers" > constraints.txt && \
-      git clone https://github.com/mit-han-lab/ComfyUI-nunchaku custom_nodes/nunchaku_nodes && \
-      pip3 install --no-cache-dir -r custom_nodes/nunchaku_nodes/requirements.txt -c constraints.txt && \
-      wget https://github.com/nunchaku-tech/nunchaku/releases/download/v1.0.0/nunchaku-1.0.0+torch2.6-cp312-cp312-linux_x86_64.whl && \
-      pip3 install --no-cache-dir nunchaku-1.0.0+torch2.6-cp312-cp312-linux_x86_64.whl && rm nunchaku-1.0.0+torch2.6-cp312-cp312-linux_x86_64.whl; \
-fi
 
 # Support for the network volume
 ADD src/extra_model_paths.yaml ./
@@ -99,6 +92,13 @@ RUN chmod +x /start.sh
 # Install custom nodes manually
 RUN comfy --workspace /comfyui node install comfyui-art-venture
 
+
+RUN if [ "$MODEL_TYPE" = "flux" ]; then \
+      comfy --workspace /comfyui node registry-install ComfyUI-nunchaku && \
+      wget https://github.com/nunchaku-tech/nunchaku/releases/download/v1.0.0/nunchaku-1.0.0+torch2.6-cp312-cp312-linux_x86_64.whl && \
+      pip3 install --no-cache-dir nunchaku-1.0.0+torch2.6-cp312-cp312-linux_x86_64.whl && rm nunchaku-1.0.0+torch2.6-cp312-cp312-linux_x86_64.whl; \
+fi
+
 RUN if [ "$MODEL_TYPE" = "wan" ]; then \
       comfy --workspace /comfyui node install comfyui-videohelpersuite; \
 fi
@@ -106,6 +106,10 @@ fi
 RUN if [ "$MODEL_TYPE" = "sd" ]; then \
       comfy --workspace /comfyui node install comfyui_ipadapter_plus comfyui_controlnet_aux; \
 fi
+
+# Ensure Torch and xformers are match
+RUN pip3 install --no-cache-dir torch==${TORCH_VERSION} torchvision torchaudio --index-url ${INDEX_URL} && \
+    pip3 install --no-cache-dir xformers==${XFORMERS_VERSION} --index-url ${INDEX_URL}
 
 # Start container
 CMD ["/start.sh"]
