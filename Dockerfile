@@ -101,11 +101,11 @@ fi
 
 WORKDIR /
 RUN if [ "$MODEL_TYPE" = "wan" ]; then \
-      RUN comfy --workspace /comfyui node install comfyui-videohelpersuite
+      comfy --workspace /comfyui node install comfyui-videohelpersuite
 fi
 
 RUN if [ "$MODEL_TYPE" = "sd" ]; then \
-      RUN comfy --workspace /comfyui node install comfyui_ipadapter_plus comfyui_controlnet_aux
+      comfy --workspace /comfyui node install comfyui_ipadapter_plus comfyui_controlnet_aux
 fi
 
 
