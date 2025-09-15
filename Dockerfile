@@ -38,6 +38,7 @@ RUN sed -i "s|http://archive.ubuntu.com/ubuntu/|http://${AWS_REGION}.ec2.archive
 RUN apt-get update && apt-get install -y \
         software-properties-common \
         python3-pip \
+        curl \
         git \
         wget \
         libgl1 \
@@ -52,7 +53,6 @@ RUN apt-get update && apt-get install -y \
     && update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.10 1 \
     && update-alternatives --install /usr/bin/python3 python3 /usr/bin/python${PYTHON_VERSION} 2 \
     && update-alternatives --set python3 /usr/bin/python${PYTHON_VERSION} \
-    && python3 --version \
     && apt-get autoremove -y \
     && apt-get clean -y \
     && rm -rf /var/lib/apt/lists/*
