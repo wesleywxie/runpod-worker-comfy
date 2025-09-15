@@ -96,7 +96,9 @@ RUN comfy --workspace /comfyui node install comfyui-art-venture
 RUN if [ "$MODEL_TYPE" = "flux" ]; then \
       comfy --workspace /comfyui node registry-install ComfyUI-nunchaku && \
       wget https://github.com/nunchaku-tech/nunchaku/releases/download/v1.0.0/nunchaku-1.0.0+torch2.6-cp312-cp312-linux_x86_64.whl && \
-      pip3 install --no-cache-dir nunchaku-1.0.0+torch2.6-cp312-cp312-linux_x86_64.whl && rm nunchaku-1.0.0+torch2.6-cp312-cp312-linux_x86_64.whl; \
+      pip3 install --no-cache-dir nunchaku-1.0.0+torch2.6-cp312-cp312-linux_x86_64.whl && rm nunchaku-1.0.0+torch2.6-cp312-cp312-linux_x86_64.whl && \
+      pip3 install --no-cache-dir torch==${TORCH_VERSION} torchvision torchaudio --index-url ${INDEX_URL} && \
+      pip3 install --no-cache-dir xformers==${XFORMERS_VERSION} --index-url ${INDEX_URL} ;\
 fi
 
 RUN if [ "$MODEL_TYPE" = "wan" ]; then \
@@ -106,10 +108,6 @@ fi
 RUN if [ "$MODEL_TYPE" = "sd" ]; then \
       comfy --workspace /comfyui node install comfyui_ipadapter_plus comfyui_controlnet_aux; \
 fi
-
-# Ensure Torch and xformers are match
-RUN pip3 install --no-cache-dir torch==${TORCH_VERSION} torchvision torchaudio --index-url ${INDEX_URL} && \
-    pip3 install --no-cache-dir xformers==${XFORMERS_VERSION} --index-url ${INDEX_URL}
 
 # Start container
 CMD ["/start.sh"]
