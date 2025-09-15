@@ -35,60 +35,44 @@ RUN sed -i "s|http://archive.ubuntu.com/ubuntu/|http://${AWS_REGION}.ec2.archive
     && apt-get update
 
 # Install git and other necessary tools
-RUN apt-get update && apt-get install -y \
-    software-properties-common \
-    python-is-python3 \
-    python3-pip \
-    git \
-    wget \
-    libgl1 \
-    libglib2.0-0 \
-    ffmpeg
+RUN add-apt-repository ppa:deadsnakes/ppa \
+    && apt-get update && apt-get install -y \
+        software-properties-common \
+        python-is-python3 \
+        python3-pip \
+        git \
+        wget \
+        libgl1 \
+        libglib2.0-0 \
+        ffmpeg \
+    && apt install -y --no-install-recommends \
+        "python${PYTHON_VERSION}" \
+        "python${PYTHON_VERSION}-dev" \
+        "python${PYTHON_VERSION}-venv" \
+        "python3-tk" \
+    && apt-get autoremove -y \
+    && apt-get clean -y \
+    && rm -rf /var/lib/apt/lists/*
 
-# Install Python from deadsnakes PPA
-RUN add-apt-repository ppa:deadsnakes/ppa
-RUN apt install -y --no-install-recommends \
-    "python${PYTHON_VERSION}" \
-    "python${PYTHON_VERSION}-dev" \
-    "python${PYTHON_VERSION}-venv" \
-    "python3-tk"
-
-# Link Python
-#RUN rm /usr/bin/python && ln -s /usr/bin/python${PYTHON_VERSION} /usr/bin/python
-#RUN rm /usr/bin/python3 && ln -s /usr/bin/python${PYTHON_VERSION} /usr/bin/python3
-
-# Install pip
-RUN curl -sS https://bootstrap.pypa.io/get-pip.py | python${PYTHON_VERSION}
-
-# Upgrade pip
-RUN python3 -m pip install --upgrade --no-cache-dir pip
-
-# Create symlink for pip3
-RUN rm -f /usr/bin/pip3 && ln -s /usr/local/bin/pip3 /usr/bin/pip3
+# Install pip && Upgrade pip && Create symlink for pip3
+RUN curl -sS https://bootstrap.pypa.io/get-pip.py | python${PYTHON_VERSION} \
+    && python3 -m pip install --upgrade --no-cache-dir pip \
+    && rm -f /usr/bin/pip3 && ln -s /usr/local/bin/pip3 /usr/bin/pip3
 
 # Install Torch and xformers
 RUN pip3 install --no-cache-dir torch==${TORCH_VERSION} torchvision torchaudio --index-url ${INDEX_URL} && \
     pip3 install --no-cache-dir xformers==${XFORMERS_VERSION} --index-url ${INDEX_URL}
 
-# Clean up to reduce image size
-RUN apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/*
-
 # Install comfy-cli using Python 3.10
-RUN python -m pip install --upgrade pip && python -m pip install comfy-cli
+RUN python -m pip install --upgrade pip && python -m pip install --no-cache-dir comfy-cli runpod requests scikit-image opencv-python matplotlib imageio_ffmpeg
 
 # Install ComfyUI
 # Use CUDA_SHORT (e.g., 12.4) to match CUDA toolchain for prebuilt wheels
 ARG CUDA_SHORT=12.4
-RUN /usr/bin/yes | comfy --workspace /comfyui install --skip-torch-or-directml --manager-url https://github.com/ltdrdata/ComfyUI-Manager@3.33.8 --nvidia --version 0.3.57
-
-# Optout analytics tracking
-RUN comfy tracking disable
+RUN /usr/bin/yes | comfy --workspace /comfyui install --skip-torch-or-directml --manager-url https://github.com/ltdrdata/ComfyUI-Manager@3.33.8 --nvidia --version 0.3.57 && comfy tracking disable
 
 # Change working directory to ComfyUI
 WORKDIR /comfyui
-
-# Install runpod and necessary libraries
-RUN python -m pip install runpod requests scikit-image opencv-python matplotlib imageio_ffmpeg
 
 # Support for the network volume
 ADD src/extra_model_paths.yaml ./
@@ -119,14 +103,13 @@ ARG MODEL_TYPE
 # Change working directory to ComfyUI
 WORKDIR /comfyui
 # Create necessary directories
-RUN mkdir -p models/{checkpoints,controlnet,vae,loras,clip,clip_vision,unet,diffusion_models,ipadapter,text_encoders,upscale_models}
-RUN mkdir -p models/ipadapter
+RUN mkdir -p models/{checkpoints,controlnet,vae,loras,clip,clip_vision,unet,diffusion_models,ipadapter,text_encoders,upscale_models} && mkdir -p models/ipadapter
 
 # Download checkpoints/vae/LoRA to include in image based on model type
 RUN if [ "$MODEL_TYPE" = "flux" ]; then \
       pip freeze | grep -E "torch|torchvision|torchaudio|xformers" > constraints.txt && \
       git clone https://github.com/mit-han-lab/ComfyUI-nunchaku custom_nodes/nunchaku_nodes && \
-      pip3 install -r custom_nodes/nunchaku_nodes/requirements.txt -c constraints.txt && \
+      pip3 install --no-cache-dir -r custom_nodes/nunchaku_nodes/requirements.txt -c constraints.txt && \
       wget -O models/diffusion_models/svdq-int4_r32-flux.1-dev.safetensors https://huggingface.co/nunchaku-tech/nunchaku-flux.1-dev/resolve/main/svdq-int4_r32-flux.1-dev.safetensors && \
       wget -O models/text_encoders/clip_l.safetensors https://huggingface.co/comfyanonymous/flux_text_encoders/blob/main/clip_l.safetensors && \
       wget -O models/text_encoders/t5xxl_fp8_e4m3fn_scaled.safetensors https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/t5xxl_fp8_e4m3fn_scaled.safetensors && \
