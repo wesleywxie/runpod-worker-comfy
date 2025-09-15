@@ -133,7 +133,7 @@ RUN mkdir -p models/{checkpoints,controlnet,vae,loras,clip,clip_vision,unet,diff
 # Download checkpoints/vae/LoRA to include in image based on model type
 RUN if [ "$MODEL_TYPE" = "flux" ]; then \
       wget -O models/diffusion_models/svdq-int4_r32-flux.1-dev.safetensors https://huggingface.co/nunchaku-tech/nunchaku-flux.1-dev/resolve/main/svdq-int4_r32-flux.1-dev.safetensors && \
-      wget -O models/text_encoders/clip_l.safetensors https://huggingface.co/comfyanonymous/flux_text_encoders/blob/main/clip_l.safetensors && \
+      wget -O models/text_encoders/clip_l.safetensors https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/clip_l.safetensors && \
       wget -O models/text_encoders/t5xxl_fp8_e4m3fn_scaled.safetensors https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/t5xxl_fp8_e4m3fn_scaled.safetensors && \
       wget -O models/vae/ae.safetensors https://huggingface.co/Comfy-Org/Lumina_Image_2.0_Repackaged/resolve/main/split_files/vae/ae.safetensors && \
       wget -O models/loras/mjV6.safetensors https://huggingface.co/strangerzonehf/Flux-Midjourney-Mix2-LoRA/resolve/main/mjV6.safetensors && \
