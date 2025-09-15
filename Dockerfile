@@ -101,7 +101,7 @@ ADD src/start.sh src/rp_handler.py test_input.json ./
 RUN chmod +x /start.sh
 
 # Install custom nodes manually
-RUN comfy --workspace /comfyui node install comfyui-art-venture comfyui_ipadapter_plus ComfyUI-IPAdapter-Flux comfyui_controlnet_aux comfyui-videohelpersuite ComfyUI-GGUF
+RUN comfy --workspace /comfyui node install comfyui-art-venture comfyui_ipadapter_plus comfyui_controlnet_aux comfyui-videohelpersuite
 
 # Start container
 CMD ["/start.sh"]
@@ -124,12 +124,14 @@ RUN mkdir -p models/ipadapter
 
 # Download checkpoints/vae/LoRA to include in image based on model type
 RUN if [ "$MODEL_TYPE" = "flux" ]; then \
-      git lfs install && \
-      git clone https://huggingface.co/InstantX/FLUX.1-dev-IP-Adapter models/ipadapter-flux && \
-      wget -O models/unet/flux1-dev-Q8_0.gguf https://huggingface.co/city96/FLUX.1-dev-gguf/resolve/main/flux1-dev-Q8_0.gguf && \
-      wget -O models/clip/t5-v1_1-xxl-encoder-Q8_0.gguf https://huggingface.co/city96/t5-v1_1-xxl-encoder-gguf/resolve/main/t5-v1_1-xxl-encoder-Q8_0.gguf && \
-      wget -O models/clip/clip_l.safetensors https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/clip_l.safetensors && \
-      wget --header="Authorization: Bearer ${HUGGINGFACE_ACCESS_TOKEN}" -O models/vae/flux_ae.safetensors https://huggingface.co/black-forest-labs/FLUX.1-dev/resolve/main/ae.safetensors && \
+      pip freeze | grep -E "torch|torchvision|torchaudio|xformers" > constraints.txt && \
+      git clone https://github.com/mit-han-lab/ComfyUI-nunchaku custom_nodes/nunchaku_nodes && \
+      pip3 install -r custom_nodes/nunchaku_nodes/requirements.txt -c constraints.txt && \
+      wget -O models/diffusion_models/svdq-int4_r32-flux.1-dev.safetensors https://huggingface.co/nunchaku-tech/nunchaku-flux.1-dev/resolve/main/svdq-int4_r32-flux.1-dev.safetensors && \
+      wget -O models/text_encoders/clip_l.safetensors https://huggingface.co/comfyanonymous/flux_text_encoders/blob/main/clip_l.safetensors && \
+      wget -O models/text_encoders/t5xxl_fp8_e4m3fn_scaled.safetensors https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/t5xxl_fp8_e4m3fn_scaled.safetensors && \
+      wget -O models/vae/ae.safetensors https://huggingface.co/Comfy-Org/Lumina_Image_2.0_Repackaged/resolve/main/split_files/vae/ae.safetensors && \
+      wget -O models/loras/mjV6.safetensors https://huggingface.co/strangerzonehf/Flux-Midjourney-Mix2-LoRA/resolve/main/mjV6.safetensors && \
       wget -O models/loras/Ars_MidJourney_Watercolor.safetensors "https://civitai.com/api/download/models/742802?type=Model&format=SafeTensor&token=${CIVITAI_ACCESS_TOKEN}" && \
       wget -O models/loras/PixelArtStylesFlux.safetensors "https://civitai.com/api/download/models/779124?type=Model&format=SafeTensor&token=${CIVITAI_ACCESS_TOKEN}" && \
       wget -O models/loras/Cartoonillustration_flux_lora_v1.safetensors "https://civitai.com/api/download/models/734299?type=Model&format=SafeTensor&token=${CIVITAI_ACCESS_TOKEN}" && \
@@ -138,7 +140,7 @@ RUN if [ "$MODEL_TYPE" = "flux" ]; then \
       wget -O models/loras/Digital_Impressionist_Flux.safetensors "https://civitai.com/api/download/models/1466567?type=Model&format=SafeTensor&token=${CIVITAI_ACCESS_TOKEN}" && \
       wget -O models/loras/Comic_book_opus_IV.safetensors "https://civitai.com/api/download/models/1277654?type=Model&format=SafeTensor&token=${CIVITAI_ACCESS_TOKEN}" && \
       wget -O models/loras/Inkwash-Fusion_v30-000030.safetensors "https://civitai.com/api/download/models/1524366?type=Model&format=SafeTensor&token=${CIVITAI_ACCESS_TOKEN}" && \
-      wget -O models/loras/Studio_Ghibli_Flux.safetensors "https://civitai.com/api/download/models/755852?type=Model&format=SafeTensor&token=${CIVITAI_ACCESS_TOKEN}"; \
+      wget -O models/loras/Ghibili-Cartoon-Art.safetensors https://huggingface.co/strangerzonehf/Ghibli-Flux-Cartoon-LoRA/resolve/main/Ghibili-Cartoon-Art.safetensors \
     fi
     
 RUN if [ "$MODEL_TYPE" = "wan" ]; then \
