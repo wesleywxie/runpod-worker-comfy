@@ -44,7 +44,6 @@ RUN apt-get update && apt-get install -y \
         libgl1 \
         libglib2.0-0 \
         ffmpeg \
-        python3-distutils \
     && add-apt-repository ppa:deadsnakes/ppa \
     && apt install -y --no-install-recommends \
         "python${PYTHON_VERSION}" \
@@ -68,7 +67,8 @@ RUN pip3 install --no-cache-dir torch==${TORCH_VERSION} torchvision torchaudio -
     pip3 install --no-cache-dir xformers==${XFORMERS_VERSION} --index-url ${INDEX_URL}
 
 # Install comfy-cli using Python
-RUN python3 -m pip install --upgrade pip && pip3 install --no-cache-dir comfy-cli runpod requests
+RUN python3 -m pip install --upgrade pip && pip3 install --no-cache-dir comfy-cli runpod requests setuptools wheel packaging setuptools-distutils
+
 
 # Install ComfyUI
 # Use CUDA_SHORT (e.g., 12.4) to match CUDA toolchain for prebuilt wheels
