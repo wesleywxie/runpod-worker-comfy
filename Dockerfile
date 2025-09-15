@@ -67,7 +67,7 @@ RUN pip3 install --no-cache-dir torch==${TORCH_VERSION} torchvision torchaudio -
     pip3 install --no-cache-dir xformers==${XFORMERS_VERSION} --index-url ${INDEX_URL}
 
 # Install comfy-cli using Python
-RUN python3 -m pip install --upgrade pip && python3 -m pip install --no-cache-dir comfy-cli runpod requests python3-distutils
+RUN python3 -m pip install --upgrade pip && pip3 install --no-cache-dir comfy-cli runpod requests python3-distutils
 
 # Install ComfyUI
 # Use CUDA_SHORT (e.g., 12.4) to match CUDA toolchain for prebuilt wheels
