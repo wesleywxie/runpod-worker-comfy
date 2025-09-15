@@ -76,6 +76,13 @@ RUN /usr/bin/yes | comfy --workspace /comfyui install --skip-torch-or-directml -
 
 # Change working directory to ComfyUI
 WORKDIR /comfyui
+RUN if [ "$MODEL_TYPE" = "flux" ]; then \
+      pip3 freeze | grep -E "torch|torchvision|torchaudio|xformers" > constraints.txt && \
+      git clone https://github.com/mit-han-lab/ComfyUI-nunchaku custom_nodes/nunchaku_nodes && \
+      pip3 install --no-cache-dir -r custom_nodes/nunchaku_nodes/requirements.txt -c constraints.txt && \
+      wget https://github.com/nunchaku-tech/nunchaku/releases/download/v1.0.0/nunchaku-1.0.0+torch2.6-cp312-cp312-linux_x86_64.whl && \
+      pip3 install --no-cache-dir nunchaku-1.0.0+torch2.6-cp312-cp312-linux_x86_64.whl && rm nunchaku-1.0.0+torch2.6-cp312-cp312-linux_x86_64.whl; \
+fi
 
 # Support for the network volume
 ADD src/extra_model_paths.yaml ./
@@ -90,16 +97,6 @@ RUN chmod +x /start.sh
 # Install custom nodes manually
 RUN comfy --workspace /comfyui node install comfyui-art-venture
 
-WORKDIR /comfyui
-RUN if [ "$MODEL_TYPE" = "flux" ]; then \
-      pip3 freeze | grep -E "torch|torchvision|torchaudio|xformers" > constraints.txt && \
-      git clone https://github.com/mit-han-lab/ComfyUI-nunchaku custom_nodes/nunchaku_nodes && \
-      pip3 install --no-cache-dir -r custom_nodes/nunchaku_nodes/requirements.txt -c constraints.txt && \
-      wget https://github.com/nunchaku-tech/nunchaku/releases/download/v1.0.0/nunchaku-1.0.0+torch2.6-cp312-cp312-linux_x86_64.whl && \
-      pip3 install --no-cache-dir nunchaku-1.0.0+torch2.6-cp312-cp312-linux_x86_64.whl && rm nunchaku-1.0.0+torch2.6-cp312-cp312-linux_x86_64.whl; \
-fi
-
-WORKDIR /
 RUN if [ "$MODEL_TYPE" = "wan" ]; then \
       comfy --workspace /comfyui node install comfyui-videohelpersuite ;\
 fi
