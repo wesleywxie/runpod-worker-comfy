@@ -78,10 +78,6 @@ ADD src/extra_model_paths.yaml ./
 # Go back to the root
 WORKDIR /
 
-# Ensure Torch and xformers version
-RUN pip3 install --no-cache-dir torch==${TORCH_VERSION} torchvision torchaudio --index-url ${INDEX_URL} && \
-    pip3 install --no-cache-dir xformers==${XFORMERS_VERSION} --index-url ${INDEX_URL}
-
 # Add scripts
 ADD src/start.sh src/rp_handler.py test_input.json ./
 RUN chmod +x /start.sh
@@ -102,6 +98,11 @@ fi
 RUN if [ "$MODEL_TYPE" = "sd" ]; then \
       comfy --workspace /comfyui node install comfyui_ipadapter_plus comfyui_controlnet_aux; \
 fi
+
+# Ensure Torch and xformers version
+RUN pip3 install --no-cache-dir torch==${TORCH_VERSION} torchvision torchaudio --index-url ${INDEX_URL} && \
+    pip3 install --no-cache-dir xformers==${XFORMERS_VERSION} --index-url ${INDEX_URL}
+
 
 # Start container
 CMD ["/start.sh"]
