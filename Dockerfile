@@ -90,6 +90,15 @@ RUN chmod +x /start.sh
 # Install custom nodes manually
 RUN comfy --workspace /comfyui node install comfyui-art-venture comfyui_ipadapter_plus comfyui_controlnet_aux comfyui-videohelpersuite
 
+WORKDIR /comfyui
+RUN if [ "$MODEL_TYPE" = "flux" ]; then \
+      pip3 freeze | grep -E "torch|torchvision|torchaudio|xformers" > constraints.txt && \
+      git clone https://github.com/mit-han-lab/ComfyUI-nunchaku custom_nodes/nunchaku_nodes && \
+      pip3 install --no-cache-dir -r custom_nodes/nunchaku_nodes/requirements.txt -c constraints.txt && \
+      wget https://github.com/nunchaku-tech/nunchaku/releases/download/v1.0.0/nunchaku-1.0.0+torch2.6-cp312-cp312-linux_x86_64.whl && \
+      pip3 install --no-cache-dir nunchaku-1.0.0+torch2.6-cp312-cp312-linux_x86_64.whl && rm nunchaku-1.0.0+torch2.6-cp312-cp312-linux_x86_64.whl; \
+fi
+
 # Start container
 CMD ["/start.sh"]
 
@@ -97,7 +106,11 @@ CMD ["/start.sh"]
 FROM base AS downloader
 
 # Install git and other necessary tools
-RUN apt-get update && apt-get install -y git git-lfs wget 
+RUN apt-get update \
+    && apt-get install -y git wget \
+    && apt-get autoremove -y \
+    && apt-get clean -y \
+    && rm -rf /var/lib/apt/lists/*
 
 ARG HUGGINGFACE_ACCESS_TOKEN
 ARG CIVITAI_ACCESS_TOKEN
@@ -110,12 +123,6 @@ RUN mkdir -p models/{checkpoints,controlnet,vae,loras,clip,clip_vision,unet,diff
 
 # Download checkpoints/vae/LoRA to include in image based on model type
 RUN if [ "$MODEL_TYPE" = "flux" ]; then \
-      pip3 freeze | grep -E "torch|torchvision|torchaudio|xformers" > constraints.txt && \
-      git clone https://github.com/mit-han-lab/ComfyUI-nunchaku custom_nodes/nunchaku_nodes && \
-      pip3 install --no-cache-dir -r custom_nodes/nunchaku_nodes/requirements.txt -c constraints.txt && \
-      wget https://github.com/nunchaku-tech/nunchaku/releases/download/v1.0.0/nunchaku-1.0.0+torch2.6-cp312-cp312-linux_x86_64.whl && \
-      pip3 install --no-cache-dir nunchaku-1.0.0+torch2.6-cp312-cp312-linux_x86_64.whl && \
-      rm nunchaku-1.0.0+torch2.6-cp312-cp312-linux_x86_64.whl && \
       wget -O models/diffusion_models/svdq-int4_r32-flux.1-dev.safetensors https://huggingface.co/nunchaku-tech/nunchaku-flux.1-dev/resolve/main/svdq-int4_r32-flux.1-dev.safetensors && \
       wget -O models/text_encoders/clip_l.safetensors https://huggingface.co/comfyanonymous/flux_text_encoders/blob/main/clip_l.safetensors && \
       wget -O models/text_encoders/t5xxl_fp8_e4m3fn_scaled.safetensors https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/t5xxl_fp8_e4m3fn_scaled.safetensors && \
