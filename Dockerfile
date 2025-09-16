@@ -137,14 +137,13 @@ RUN if [ "$MODEL_TYPE" = "flux" ]; then \
       wget -O models/text_encoders/t5xxl_fp8_e4m3fn_scaled.safetensors https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/t5xxl_fp8_e4m3fn_scaled.safetensors && \
       wget -O models/vae/ae.safetensors https://huggingface.co/Comfy-Org/Lumina_Image_2.0_Repackaged/resolve/main/split_files/vae/ae.safetensors && \
       wget -O models/loras/mjV6.safetensors https://huggingface.co/strangerzonehf/Flux-Midjourney-Mix2-LoRA/resolve/main/mjV6.safetensors && \
-      wget -O models/loras/Ars_MidJourney_Watercolor.safetensors "https://civitai.com/api/download/models/742802?type=Model&format=SafeTensor&token=${CIVITAI_ACCESS_TOKEN}" && \
-      wget -O models/loras/PixelArtStylesFlux.safetensors "https://civitai.com/api/download/models/779124?type=Model&format=SafeTensor&token=${CIVITAI_ACCESS_TOKEN}" && \
-      wget -O models/loras/Cartoonillustration_flux_lora_v1.safetensors "https://civitai.com/api/download/models/734299?type=Model&format=SafeTensor&token=${CIVITAI_ACCESS_TOKEN}" && \
-      wget -O models/loras/RealAnime.safetensors "https://civitai.com/api/download/models/1549230?type=Model&format=SafeTensor&token=${CIVITAI_ACCESS_TOKEN}" && \
-      wget -O models/loras/New_Fantasy_CoreV4_FLUX.safetensors "https://civitai.com/api/download/models/1264088?type=Model&format=SafeTensor&token=${CIVITAI_ACCESS_TOKEN}" && \
-      wget -O models/loras/Digital_Impressionist_Flux.safetensors "https://civitai.com/api/download/models/1466567?type=Model&format=SafeTensor&token=${CIVITAI_ACCESS_TOKEN}" && \
-      wget -O models/loras/Comic_book_opus_IV.safetensors "https://civitai.com/api/download/models/1277654?type=Model&format=SafeTensor&token=${CIVITAI_ACCESS_TOKEN}" && \
-      wget -O models/loras/Inkwash-Fusion_v30-000030.safetensors "https://civitai.com/api/download/models/1524366?type=Model&format=SafeTensor&token=${CIVITAI_ACCESS_TOKEN}" && \
+      wget -O models/loras/ume_modern_pixelart.safetensors https://huggingface.co/UmeAiRT/FLUX.1-dev-LoRA-Modern_Pixel_art/resolve/main/ume_modern_pixelart.safetensors && \
+      wget -O models/loras/Long-Toon.safetensors https://huggingface.co/prithivMLmods/Flux-Long-Toon-LoRA/resolve/main/Long-Toon.safetensors && \
+      wget -O models/loras/Animeo.safetensors https://huggingface.co/strangerzonehf/Flux-Animeo-v1-LoRA/resolve/main/Animeo.safetensors && \
+      wget -O models/loras/NewFantasyCoreV4.5-FLUX_by_VisionaryAI.safetensors https://huggingface.co/DavidBaloches/New_Fantasy_Core-FLUX/resolve/main/NewFantasyCoreV4.5-FLUX_by_VisionaryAI.safetensors && \
+      wget -O models/loras/lora_v2.safetensors https://huggingface.co/aleksa-codes/flux-ghibsky-illustration/resolve/main/lora_v2.safetensors && \
+      wget -O models/loras/araminta_k_flux_koda.safetensors https://huggingface.co/alvdansen/flux-koda/resolve/main/araminta_k_flux_koda.safetensors && \
+      wget -O models/loras/Sketch-Smudge.safetensors https://huggingface.co/strangerzonehf/Flux-Sketch-Smudge-LoRA/resolve/main/Sketch-Smudge.safetensors && \
       wget -O models/loras/Ghibili-Cartoon-Art.safetensors https://huggingface.co/strangerzonehf/Ghibli-Flux-Cartoon-LoRA/resolve/main/Ghibili-Cartoon-Art.safetensors; \
     fi
     
