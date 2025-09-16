@@ -92,7 +92,7 @@ RUN chmod +x /start.sh
 RUN comfy --workspace /comfyui node install comfyui-art-venture
 
 
-RUN if [ "$MODEL_TYPE" = "flux" ]; then \
+RUN if [ "$MODEL_TYPE" = "flux" ] || [ "$MODEL_TYPE" = "qwen" ]; then \
       comfy --workspace /comfyui node registry-install ComfyUI-nunchaku && \
       wget https://github.com/nunchaku-tech/nunchaku/releases/download/v1.0.0/nunchaku-1.0.0+torch2.6-cp312-cp312-linux_x86_64.whl && \
       pip3 install --no-cache-dir nunchaku-1.0.0+torch2.6-cp312-cp312-linux_x86_64.whl && rm nunchaku-1.0.0+torch2.6-cp312-cp312-linux_x86_64.whl && \
@@ -130,7 +130,6 @@ WORKDIR /comfyui
 # Create necessary directories
 RUN mkdir -p models/{checkpoints,controlnet,vae,loras,clip,clip_vision,unet,diffusion_models,ipadapter,text_encoders,upscale_models} && mkdir -p models/ipadapter
 
-# Download checkpoints/vae/LoRA to include in image based on model type
 RUN if [ "$MODEL_TYPE" = "flux" ]; then \
       wget -O models/diffusion_models/svdq-int4_r32-flux.1-dev.safetensors https://huggingface.co/nunchaku-tech/nunchaku-flux.1-dev/resolve/main/svdq-int4_r32-flux.1-dev.safetensors && \
       wget -O models/text_encoders/clip_l.safetensors https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/clip_l.safetensors && \
@@ -145,13 +144,19 @@ RUN if [ "$MODEL_TYPE" = "flux" ]; then \
       wget -O models/loras/araminta_k_flux_koda.safetensors https://huggingface.co/alvdansen/flux-koda/resolve/main/araminta_k_flux_koda.safetensors && \
       wget -O models/loras/Sketch-Smudge.safetensors https://huggingface.co/strangerzonehf/Flux-Sketch-Smudge-LoRA/resolve/main/Sketch-Smudge.safetensors && \
       wget -O models/loras/Ghibili-Cartoon-Art.safetensors https://huggingface.co/strangerzonehf/Ghibli-Flux-Cartoon-LoRA/resolve/main/Ghibili-Cartoon-Art.safetensors; \
-    fi
+fi
+
+RUN if [ "$MODEL_TYPE" = "qwen" ]; then \
+      wget -O models/diffusion_models/svdq-int4_r128-qwen-image-edit-lightningv1.0-4steps.safetensors https://huggingface.co/nunchaku-tech/nunchaku-qwen-image-edit/resolve/main/svdq-int4_r128-qwen-image-edit-lightningv1.0-4steps.safetensors && \
+      wget -O models/vae/qwen_image_vae.safetensors https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/vae/qwen_image_vae.safetensors && \
+      wget -O models/text_encoders/qwen_2.5_vl_7b_fp8_scaled.safetensors https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/text_encoders/qwen_2.5_vl_7b_fp8_scaled.safetensors ; \
+fi
     
 RUN if [ "$MODEL_TYPE" = "wan" ]; then \
       wget -O models/text_encoders/umt5_xxl_fp8_e4m3fn_scaled.safetensors https://huggingface.co/Comfy-Org/Wan_2.1_ComfyUI_repackaged/resolve/main/split_files/text_encoders/umt5_xxl_fp8_e4m3fn_scaled.safetensors && \
       wget -O models/clip_vision/clip_vision_h.safetensors https://huggingface.co/Comfy-Org/Wan_2.1_ComfyUI_repackaged/resolve/main/split_files/clip_vision/clip_vision_h.safetensors && \
       wget -O models/vae/wan_2.1_vae.safetensors https://huggingface.co/Comfy-Org/Wan_2.1_ComfyUI_repackaged/resolve/main/split_files/vae/wan_2.1_vae.safetensors; \
-    fi
+fi
 
 RUN if [ "$MODEL_TYPE" = "sd" ]; then \
       wget -O models/checkpoints/dreamshaper_8.safetensors "https://civitai.com/api/download/models/128713?type=Model&format=SafeTensor&size=pruned&fp=fp16" && \
@@ -172,7 +177,7 @@ RUN if [ "$MODEL_TYPE" = "sd" ]; then \
       wget -O models/loras/ip-adapter-faceid-plusv2_sd15_lora.safetensors https://huggingface.co/h94/IP-Adapter-FaceID/resolve/main/ip-adapter-faceid-plusv2_sd15_lora.safetensors && \
       wget -O models/upscale_models/RealESRGAN_x2plus.pth https://github.com/xinntao/Real-ESRGAN/releases/download/v0.2.1/RealESRGAN_x2plus.pth && \
       wget -O models/upscale_models/RealESRGAN_x4plus.pth https://github.com/xinntao/Real-ESRGAN/releases/download/v0.1.0/RealESRGAN_x4plus.pth; \
-    fi
+fi
 
 # Stage 3: Final image
 FROM base AS final
