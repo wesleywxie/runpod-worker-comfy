@@ -137,7 +137,7 @@ RUN if [ "$MODEL_TYPE" = "flux" ]; then \
       wget -O models/loras/ume_modern_pixelart.safetensors https://huggingface.co/UmeAiRT/FLUX.1-dev-LoRA-Modern_Pixel_art/resolve/main/ume_modern_pixelart.safetensors && \
       wget -O models/loras/Long-Toon.safetensors https://huggingface.co/prithivMLmods/Flux-Long-Toon-LoRA/resolve/main/Long-Toon.safetensors && \
       wget -O models/loras/Animeo.safetensors https://huggingface.co/strangerzonehf/Flux-Animeo-v1-LoRA/resolve/main/Animeo.safetensors && \
-      wget -O models/loras/NewFantasyCoreV4.5-FLUX_by_VisionaryAI.safetensors https://huggingface.co/DavidBaloches/New_Fantasy_Core-FLUX/resolve/main/NewFantasyCoreV4.5-FLUX_by_VisionaryAI.safetensors && \
+      wget -O models/loras/UNI_FI_NoCAP-64.safetensors "https://civitai.com/api/download/models/1606091?type=Model&format=SafeTensor&&token=${CIVITAI_ACCESS_TOKEN}" && \
       wget -O models/loras/lora_v2.safetensors https://huggingface.co/aleksa-codes/flux-ghibsky-illustration/resolve/main/lora_v2.safetensors && \
       wget -O models/loras/araminta_k_flux_koda.safetensors https://huggingface.co/alvdansen/flux-koda/resolve/main/araminta_k_flux_koda.safetensors && \
       wget -O models/loras/Sketch-Smudge.safetensors https://huggingface.co/strangerzonehf/Flux-Sketch-Smudge-LoRA/resolve/main/Sketch-Smudge.safetensors && \
