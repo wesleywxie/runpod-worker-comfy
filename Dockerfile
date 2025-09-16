@@ -147,7 +147,7 @@ RUN if [ "$MODEL_TYPE" = "flux" ]; then \
 fi
 
 RUN if [ "$MODEL_TYPE" = "qwen" ]; then \
-      wget -O models/diffusion_models/svdq-int4_r128-qwen-image-edit-lightningv1.0-4steps.safetensors https://huggingface.co/nunchaku-tech/nunchaku-qwen-image-edit/resolve/main/svdq-int4_r128-qwen-image-edit-lightningv1.0-4steps.safetensors && \
+      wget -O models/diffusion_models/svdq-int4_r128-qwen-image-edit-lightningv1.0-8steps.safetensors https://huggingface.co/nunchaku-tech/nunchaku-qwen-image-edit/resolve/main/svdq-int4_r128-qwen-image-edit-lightningv1.0-8steps.safetensors && \
       wget -O models/vae/qwen_image_vae.safetensors https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/vae/qwen_image_vae.safetensors && \
       wget -O models/text_encoders/qwen_2.5_vl_7b_fp8_scaled.safetensors https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/text_encoders/qwen_2.5_vl_7b_fp8_scaled.safetensors ; \
 fi
