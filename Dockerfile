@@ -2,7 +2,7 @@
 
 # Stage 1: Base image with common dependencies
 # Allow overriding CUDA/Ubuntu variants via build args
-ARG CUDA_VERSION=12.8.1
+ARG CUDA_VERSION
 ARG CUDNN_FLAVOR=cudnn-runtime
 ARG UBUNTU_VERSION=22.04
 FROM nvidia/cuda:${CUDA_VERSION}-${CUDNN_FLAVOR}-ubuntu${UBUNTU_VERSION} AS base
@@ -17,10 +17,10 @@ ENV PYTHONUNBUFFERED=1
 ENV CMAKE_BUILD_PARALLEL_LEVEL=8
 
 # Core version args (overridable via Bake or --build-arg)
-ARG PYTHON_VERSION=3.12
-ARG TORCH_CUDA_SUFFIX=cu128
-ARG TORCH_VERSION=2.8.0+cu128
-ARG XFORMERS_VERSION=0.0.32.post2
+ARG PYTHON_VERSION
+ARG TORCH_CUDA_SUFFIX
+ARG TORCH_VERSION
+ARG XFORMERS_VERSION
 
 # Expose as environment variables for convenience
 ENV PYTHON_VERSION=${PYTHON_VERSION}
@@ -92,8 +92,8 @@ RUN comfy --workspace /comfyui node install comfyui-art-venture
 
 RUN if [ "$MODEL_TYPE" = "flux" ] || [ "$MODEL_TYPE" = "qwen" ]; then \
       comfy --workspace /comfyui node registry-install ComfyUI-nunchaku && \
-      wget https://github.com/nunchaku-tech/nunchaku/releases/download/v1.0.0/nunchaku-1.0.0+torch2.8-cp312-cp312-linux_x86_64.whl && \
-      pip3 install --no-cache-dir nunchaku-1.0.0+torch2.8-cp312-cp312-linux_x86_64.whl && rm nunchaku-1.0.0+torch2.8-cp312-cp312-linux_x86_64.whl && \
+      wget https://github.com/nunchaku-tech/nunchaku/releases/download/v1.0.0/nunchaku-1.0.0+torch2.6-cp312-cp312-linux_x86_64.whl && \
+      pip3 install --no-cache-dir nunchaku-1.0.0+torch2.6-cp312-cp312-linux_x86_64.whl && rm nunchaku-1.0.0+torch2.6-cp312-cp312-linux_x86_64.whl && \
       pip3 install --no-cache-dir torch==${TORCH_VERSION} torchvision torchaudio --index-url ${INDEX_URL} && \
       pip3 install --no-cache-dir xformers==${XFORMERS_VERSION} --index-url ${INDEX_URL} ;\
 fi

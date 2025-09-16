@@ -24,19 +24,19 @@ variable "PYTHON_VERSION" {
 }
 
 variable "CUDA_VERSION" {
-  default = "12.8.1"
+  default = "12.4.1"
 }
 
 variable "TORCH_CUDA_SUFFIX" {
-  default = "cu128"
+  default = "cu124"
 }
 
 variable "TORCH_VERSION" {
-  default = "2.8.0+cu128"
+  default = "2.6.0+cu124"
 }
 
 variable "XFORMERS_VERSION" {
-  default = "0.0.32.post2"
+  default = "0.0.29.post3"
 }
 
 group "default" {
