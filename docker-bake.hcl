@@ -82,6 +82,25 @@ target "flux" {
   inherits = ["base"]
 }
 
+target "qwen" {
+  context = "."
+  dockerfile = "Dockerfile"
+  target = "final"
+  args = {
+    MODEL_TYPE = "qwen"
+    HUGGINGFACE_ACCESS_TOKEN = "${HUGGINGFACE_ACCESS_TOKEN}"
+    CIVITAI_ACCESS_TOKEN = "${CIVITAI_ACCESS_TOKEN}"
+    PYTHON_VERSION     = "${PYTHON_VERSION}"
+    CUDA_VERSION       = "${CUDA_VERSION}"
+    CUDA_SHORT         = "${CUDA_SHORT}"
+    TORCH_CUDA_SUFFIX  = "${TORCH_CUDA_SUFFIX}"
+    TORCH_VERSION      = "${TORCH_VERSION}"
+    XFORMERS_VERSION   = "${XFORMERS_VERSION}"
+  }
+  tags = ["${DOCKERHUB_REPO}/${DOCKERHUB_IMG}:${RELEASE_VERSION}-qwen"]
+  inherits = ["base"]
+}
+
 target "sd" {
   context = "."
   dockerfile = "Dockerfile"
