@@ -24,23 +24,19 @@ variable "PYTHON_VERSION" {
 }
 
 variable "CUDA_VERSION" {
-  default = "12.4.1"
-}
-
-variable "CUDA_SHORT" {
-  default = "12.4"
+  default = "12.8.1"
 }
 
 variable "TORCH_CUDA_SUFFIX" {
-  default = "cu124"
+  default = "cu128"
 }
 
 variable "TORCH_VERSION" {
-  default = "2.6.0+cu124"
+  default = "2.8.0+cu128"
 }
 
 variable "XFORMERS_VERSION" {
-  default = "0.0.29.post3"
+  default = "0.0.32.post2"
 }
 
 group "default" {
@@ -55,7 +51,6 @@ target "base" {
   args = {
     PYTHON_VERSION     = "${PYTHON_VERSION}"
     CUDA_VERSION       = "${CUDA_VERSION}"
-    CUDA_SHORT         = "${CUDA_SHORT}"
     TORCH_CUDA_SUFFIX  = "${TORCH_CUDA_SUFFIX}"
     TORCH_VERSION      = "${TORCH_VERSION}"
     XFORMERS_VERSION   = "${XFORMERS_VERSION}"
@@ -73,7 +68,6 @@ target "flux" {
     CIVITAI_ACCESS_TOKEN = "${CIVITAI_ACCESS_TOKEN}"
     PYTHON_VERSION     = "${PYTHON_VERSION}"
     CUDA_VERSION       = "${CUDA_VERSION}"
-    CUDA_SHORT         = "${CUDA_SHORT}"
     TORCH_CUDA_SUFFIX  = "${TORCH_CUDA_SUFFIX}"
     TORCH_VERSION      = "${TORCH_VERSION}"
     XFORMERS_VERSION   = "${XFORMERS_VERSION}"
@@ -92,7 +86,6 @@ target "qwen" {
     CIVITAI_ACCESS_TOKEN = "${CIVITAI_ACCESS_TOKEN}"
     PYTHON_VERSION     = "${PYTHON_VERSION}"
     CUDA_VERSION       = "${CUDA_VERSION}"
-    CUDA_SHORT         = "${CUDA_SHORT}"
     TORCH_CUDA_SUFFIX  = "${TORCH_CUDA_SUFFIX}"
     TORCH_VERSION      = "${TORCH_VERSION}"
     XFORMERS_VERSION   = "${XFORMERS_VERSION}"
@@ -111,7 +104,6 @@ target "sd" {
     CIVITAI_ACCESS_TOKEN = "${CIVITAI_ACCESS_TOKEN}"
     PYTHON_VERSION     = "${PYTHON_VERSION}"
     CUDA_VERSION       = "${CUDA_VERSION}"
-    CUDA_SHORT         = "${CUDA_SHORT}"
     TORCH_CUDA_SUFFIX  = "${TORCH_CUDA_SUFFIX}"
     TORCH_VERSION      = "${TORCH_VERSION}"
     XFORMERS_VERSION   = "${XFORMERS_VERSION}"
@@ -132,7 +124,6 @@ target "wan" {
     PYTHON_VERSION     = "${PYTHON_VERSION}"
     # Override CUDA to 12.8 for WAN 2.1 only
     CUDA_VERSION       = "12.8.1"
-    CUDA_SHORT         = "12.8"
     TORCH_CUDA_SUFFIX  = "cu128"
     # Choose a Torch version that matches cu128 wheels
     TORCH_VERSION      = "2.8.0+cu128"
