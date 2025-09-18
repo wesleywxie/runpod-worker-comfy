@@ -127,7 +127,7 @@ target "wan" {
     TORCH_CUDA_SUFFIX  = "cu128"
     # Choose a Torch version that matches cu128 wheels
     TORCH_VERSION      = "2.8.0+cu128"
-    XFORMERS_VERSION   = "0.0.32.post1"
+    XFORMERS_VERSION   = "0.0.31.post1"
   }
   tags = ["${DOCKERHUB_REPO}/${DOCKERHUB_IMG}:${RELEASE_VERSION}-wan"]
   inherits = ["base"]
