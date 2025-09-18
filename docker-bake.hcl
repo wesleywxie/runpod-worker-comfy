@@ -121,7 +121,7 @@ target "wan" {
     MODEL_TYPE = "wan"
     HUGGINGFACE_ACCESS_TOKEN = "${HUGGINGFACE_ACCESS_TOKEN}"
     CIVITAI_ACCESS_TOKEN = "${CIVITAI_ACCESS_TOKEN}"
-    PYTHON_VERSION     = "3.9.23"
+    PYTHON_VERSION     = "3.9"
     # Override CUDA to 12.8 for WAN 2.1 only
     CUDA_VERSION       = "12.8.1"
     TORCH_CUDA_SUFFIX  = "cu128"
