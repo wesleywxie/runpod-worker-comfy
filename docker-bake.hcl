@@ -121,12 +121,12 @@ target "wan" {
     MODEL_TYPE = "wan"
     HUGGINGFACE_ACCESS_TOKEN = "${HUGGINGFACE_ACCESS_TOKEN}"
     CIVITAI_ACCESS_TOKEN = "${CIVITAI_ACCESS_TOKEN}"
-    PYTHON_VERSION     = "${PYTHON_VERSION}"
+    PYTHON_VERSION     = "3.9.23"
     # Override CUDA to 12.8 for WAN 2.1 only
     CUDA_VERSION       = "12.8.1"
     TORCH_CUDA_SUFFIX  = "cu128"
     # Choose a Torch version that matches cu128 wheels
-    TORCH_VERSION      = "2.8.0+cu128"
+    TORCH_VERSION      = "2.7.1+cu128"
     XFORMERS_VERSION   = "0.0.31.post1"
   }
   tags = ["${DOCKERHUB_REPO}/${DOCKERHUB_IMG}:${RELEASE_VERSION}-wan"]
